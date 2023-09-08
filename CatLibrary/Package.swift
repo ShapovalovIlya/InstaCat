@@ -10,33 +10,37 @@ let package = Package(
     ],
     products: [
         InnerDependencies.Extensions.library,
+        InnerDependencies.Dependencies.library,
         .library(name: "CatCore", targets: ["CatCore"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
         .target(name: "Extensions"),
+        .target(name: "Dependencies"),
         .target(
             name: "CatCore",
             dependencies: [
                 InnerDependencies.Extensions.target
-            ]
-        ),
+            ]),
     ]
 )
 
 //MARK: - InnerDependencies
 fileprivate enum InnerDependencies {
     case Extensions
+    case Dependencies
     
     var library: Product {
         switch self {
-            case .Extensions: .library(name: "Extensions", targets: ["Extensions"])
+        case .Extensions: .library(name: "Extensions", targets: ["Extensions"])
+        case .Dependencies: .library(name: "Dependencies", targets: ["Dependencies"])
         }
     }
     
     var target: Target.Dependency {
         switch self {
         case .Extensions: return "Extensions"
+        case .Dependencies: return "Dependencies"
         }
     }
 }
