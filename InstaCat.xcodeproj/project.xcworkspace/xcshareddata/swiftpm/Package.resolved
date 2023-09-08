@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "b6f62758f21a8c03cd64f4009c037cfa580a256e",
+        "version" : "7.9.1"
+      }
+    },
+    {
+      "identity" : "swiftfp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShapovalovIlya/SwiftFP.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "45f181cbd64eefe6bacc4c64601dd421038ae1aa"
+      }
+    },
+    {
+      "identity" : "swiftudf",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShapovalovIlya/SwiftUDF.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "d9698cbb09eb2edfb8d92f3550c66fa03953e5c5"
+      }
+    }
+  ],
+  "version" : 2
+}

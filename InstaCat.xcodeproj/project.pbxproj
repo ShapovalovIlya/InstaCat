@@ -7,19 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		866FB89E2AABD55B005CAD0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FB89D2AABD55B005CAD0D /* AppDelegate.swift */; };
-		866FB8A02AABD55B005CAD0D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FB89F2AABD55B005CAD0D /* ViewController.swift */; };
 		866FB8A22AABD55D005CAD0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 866FB8A12AABD55D005CAD0D /* Assets.xcassets */; };
-		866FB8A52AABD55D005CAD0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 866FB8A32AABD55D005CAD0D /* Main.storyboard */; };
+		866FB8AD2AABD5A4005CAD0D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FB8AC2AABD5A4005CAD0D /* main.swift */; };
+		866FB8AF2AABD609005CAD0D /* CatLibrary in Resources */ = {isa = PBXBuildFile; fileRef = 866FB8AE2AABD609005CAD0D /* CatLibrary */; };
+		866FB8B22AABD68D005CAD0D /* CatCore in Frameworks */ = {isa = PBXBuildFile; productRef = 866FB8B12AABD68D005CAD0D /* CatCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		866FB89A2AABD55B005CAD0D /* InstaCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		866FB89D2AABD55B005CAD0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		866FB89F2AABD55B005CAD0D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		866FB8A12AABD55D005CAD0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		866FB8A42AABD55D005CAD0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		866FB8A62AABD55D005CAD0D /* InstaCat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InstaCat.entitlements; sourceTree = "<group>"; };
+		866FB8AC2AABD5A4005CAD0D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		866FB8AE2AABD609005CAD0D /* CatLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CatLibrary; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +26,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				866FB8B22AABD68D005CAD0D /* CatCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,8 +36,10 @@
 		866FB8912AABD55A005CAD0D = {
 			isa = PBXGroup;
 			children = (
+				866FB8AE2AABD609005CAD0D /* CatLibrary */,
 				866FB89C2AABD55B005CAD0D /* InstaCat */,
 				866FB89B2AABD55B005CAD0D /* Products */,
+				866FB8B02AABD68D005CAD0D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,13 +54,18 @@
 		866FB89C2AABD55B005CAD0D /* InstaCat */ = {
 			isa = PBXGroup;
 			children = (
-				866FB89D2AABD55B005CAD0D /* AppDelegate.swift */,
-				866FB89F2AABD55B005CAD0D /* ViewController.swift */,
 				866FB8A12AABD55D005CAD0D /* Assets.xcassets */,
-				866FB8A32AABD55D005CAD0D /* Main.storyboard */,
 				866FB8A62AABD55D005CAD0D /* InstaCat.entitlements */,
+				866FB8AC2AABD5A4005CAD0D /* main.swift */,
 			);
 			path = InstaCat;
+			sourceTree = "<group>";
+		};
+		866FB8B02AABD68D005CAD0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +84,9 @@
 			dependencies = (
 			);
 			name = InstaCat;
+			packageProductDependencies = (
+				866FB8B12AABD68D005CAD0D /* CatCore */,
+			);
 			productName = InstaCat;
 			productReference = 866FB89A2AABD55B005CAD0D /* InstaCat.app */;
 			productType = "com.apple.product-type.application";
@@ -120,7 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				866FB8A22AABD55D005CAD0D /* Assets.xcassets in Resources */,
-				866FB8A52AABD55D005CAD0D /* Main.storyboard in Resources */,
+				866FB8AF2AABD609005CAD0D /* CatLibrary in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,23 +141,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				866FB8A02AABD55B005CAD0D /* ViewController.swift in Sources */,
-				866FB89E2AABD55B005CAD0D /* AppDelegate.swift in Sources */,
+				866FB8AD2AABD5A4005CAD0D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		866FB8A32AABD55D005CAD0D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				866FB8A42AABD55D005CAD0D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		866FB8A72AABD55D005CAD0D /* Debug */ = {
@@ -281,7 +279,6 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -308,7 +305,6 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -344,6 +340,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		866FB8B12AABD68D005CAD0D /* CatCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CatCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 866FB8922AABD55A005CAD0D /* Project object */;
 }
