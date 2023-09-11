@@ -20,7 +20,6 @@ public struct Endpoint {
         if !queryItems.isEmpty {
             components.queryItems = queryItems
         }
-        
         guard let url = components.url else {
             preconditionFailure("Unable to create url from: \(components)")
         }

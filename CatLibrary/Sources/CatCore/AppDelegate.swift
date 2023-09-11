@@ -11,12 +11,14 @@ import OSLog
 
 public final class AppDelegate: NSObject, NSApplicationDelegate {
 
+    //MARK: - init(_:)
     public override init() {
         super.init()
         
-        Logger.system.debug("AppDelegate: \(#function)")
+        Logger.system.logging(level: .debug, domain: self, event: #function)
     }
     
+    //MARK: - Public methods
     public func applicationDidFinishLaunching(_ aNotification: Notification) {
         
     }

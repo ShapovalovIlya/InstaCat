@@ -11,4 +11,11 @@ public extension Logger {
     private static let subsystem = Bundle.main.bundleIdentifier!
     static let viewCycle = Self(subsystem: subsystem, category: "viewCycle")
     static let system = Self(subsystem: subsystem, category: "system")
+    
+    func logging(level: OSLogType, domain: Any, event: String) {
+        self.log(
+            level: level,
+            "\(String(describing: domain)): \(event)"
+        )
+    }
 }

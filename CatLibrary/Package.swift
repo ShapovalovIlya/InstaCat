@@ -11,12 +11,18 @@ let package = Package(
     products: [
         InnerDependencies.Extensions.library,
         InnerDependencies.Dependencies.library,
+        InnerDependencies.Models.library,
         .library(name: "CatCore", targets: ["CatCore"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
         .target(name: "Extensions"),
-        .target(name: "Dependencies"),
+        .target(name: "Models"),
+        .target(
+            name: "Dependencies", 
+            dependencies: [
+                OuterDependencies.SwiftFP.target
+            ]),
         .target(
             name: "CatCore",
             dependencies: [
@@ -29,11 +35,13 @@ let package = Package(
 fileprivate enum InnerDependencies {
     case Extensions
     case Dependencies
+    case Models
     
     var library: Product {
         switch self {
         case .Extensions: .library(name: "Extensions", targets: ["Extensions"])
         case .Dependencies: .library(name: "Dependencies", targets: ["Dependencies"])
+        case .Models: .library(name: "Models", targets: ["Models"])
         }
     }
     
@@ -41,6 +49,7 @@ fileprivate enum InnerDependencies {
         switch self {
         case .Extensions: return "Extensions"
         case .Dependencies: return "Dependencies"
+        case .Models: return "Models"
         }
     }
 }
