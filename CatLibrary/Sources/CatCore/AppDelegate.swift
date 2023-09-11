@@ -8,19 +8,21 @@
 import Cocoa
 import Extensions
 import OSLog
+import RootDomain
 
 public final class AppDelegate: NSObject, NSApplicationDelegate {
+    lazy var rootDomainProvider = RootDomainProvider()
 
     //MARK: - init(_:)
     public override init() {
         super.init()
         
-        Logger.system.logging(level: .debug, domain: self, event: #function)
+        Logger.system.log(level: .debug, domain: self, event: #function)
     }
     
     //MARK: - Public methods
     public func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
+        rootDomainProvider.showWindow()
     }
 
     public func applicationWillTerminate(_ aNotification: Notification) {
@@ -31,6 +33,12 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    public static func main() {
+        let delegate = AppDelegate()
+        let app = NSApplication.shared
 
+        app.delegate = delegate
+        app.run()
+    }
 }
 

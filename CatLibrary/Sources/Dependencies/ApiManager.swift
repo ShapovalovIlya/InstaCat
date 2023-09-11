@@ -83,16 +83,14 @@ private extension ApiManager {
         }
         
         switch StatusCodes(rawValue: httpResponse.statusCode) {
-        case .ok, .none: break
+        case .ok: return response.data
         case .badRequest: throw URLError(.resourceUnavailable)
         case .unauthorized: throw URLError(.userAuthenticationRequired)
         case .forbidden: throw URLError(.noPermissionsToReadFile)
         case .notFound: throw URLError(.fileDoesNotExist)
         case .requestTimeout, .gatewayTimeout: throw URLError(.timedOut)
-        case .internalError, .unknown: throw URLError(.unknown)
+        case .internalError, .unknown, .none: throw URLError(.unknown)
         case .badGateway: throw URLError(.dnsLookupFailed)
         }
-        
-        return response.data
     }
 }
