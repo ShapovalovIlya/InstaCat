@@ -9,22 +9,23 @@ import Cocoa
 import AppKit
 import OSLog
 import Extensions
+import SwiftUDF
 
 public final class RootWindowController: NSWindowController {
     //MARK: - Public properties
-    public let rootWindow: RootWindowProtocol
     
     //MARK: - Private properties
-    private let styleMasks: [NSWindow.StyleMask] = [.closable, .resizable]
+    private let store: StoreOf<RootDomain>
+    private let sideBarController = NSViewController()
+    private let contentController = NSViewController()
+    private var splitViewController: NSSplitViewController?
     
     //MARK: - init(_:)
-    public init(rootWindow: RootWindowProtocol) {
-        self.rootWindow = rootWindow
-        super.init(window: rootWindow)
+    public init(store: StoreOf<RootDomain>) {
+        self.store = store
+        super.init(window: .init())
         
-        self.rootWindow.windowController = self
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
-        
         loadWindow()
     }
     
@@ -33,12 +34,50 @@ public final class RootWindowController: NSWindowController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        Logger.viewCycle.debug(#function)
+    }
+    
     //MARK: - Life Cycle
     public override func loadWindow() {
-        self.window = rootWindow
+        window?.backgroundColor = .white
+        window?.addStyleMasks(
+            .closable,
+            .miniaturizable,
+            .resizable,
+            .titled
+        )
+        window?.title = "InstaCat"
         
-        setup(window: rootWindow)
-        styleMasks.forEach { rootWindow.styleMask.insert($0) }
+        let toolbar = NSToolbar()
+        toolbar.displayMode = .iconOnly
+        toolbar.delegate = self
+        
+        window?.toolbar = toolbar
+        window?.toolbarStyle = .unifiedCompact
+        
+        let sideBarView = NSView()
+        sideBarView.wantsLayer = true
+        sideBarView.layer?.backgroundColor = NSColor.red.cgColor
+        sideBarView.setFrameSize(.init(width: 200, height: 400))
+        
+        let contentBarView = NSView()
+        contentBarView.wantsLayer = true
+        contentBarView.layer?.backgroundColor = NSColor.green.cgColor
+        contentBarView.setFrameSize(.init(width: 400, height: 400))
+        
+        sideBarController.view = sideBarView
+        contentController.view = contentBarView
+        
+        splitViewController = NSSplitViewController(
+            sideBarController: sideBarController,
+            contentController: contentController
+        )
+        
+        contentViewController = splitViewController
+        window?.contentView = splitViewController?.splitView
+        
+        
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
         
         windowWillLoad()
@@ -57,17 +96,43 @@ public final class RootWindowController: NSWindowController {
     
     //MARK: - Public methods
     public override func showWindow(_ sender: Any?) {
-        rootWindow.makeKeyAndOrderFront(sender)
-        rootWindow.center()
+        window?.makeKeyAndOrderFront(sender)
+        window?.center()
     }
 
 }
 
+//MARK: - NSToolbarDelegate
+extension RootWindowController: NSToolbarDelegate {
+    public func toolbar(
+        _ toolbar: NSToolbar,
+        itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+        willBeInsertedIntoToolbar flag: Bool
+    ) -> NSToolbarItem? {
+       NSToolbarItem(itemIdentifier: itemIdentifier)
+    }
+    
+    public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        [
+            .toggleSidebar
+        ]
+    }
+    
+    public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+        [
+            .toggleSidebar
+        ]
+    }
+    
+}
+
 private extension RootWindowController {
     //MARK: - Private methods
-    func setup(window: NSWindow) {
-        let size: CGSize = .init(width: 400, height: 400)
+    func setup(window: NSWindow?) {
+        let size: CGSize = .init(width: 600, height: 400)
         let rect = NSRect(origin: .zero, size: size)
-        window.setFrame(rect, display: true)
+        window?.setFrame(
+            rect,
+            display: true)
     }
 }

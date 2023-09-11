@@ -6,16 +6,23 @@
 //
 
 import AppKit
+import Extensions
+import SwiftUDF
 
 @dynamicMemberLookup
 public struct RootDomainProvider {
-    private let window: RootWindow
+    public let store: StoreOf<RootDomain>
+    
+    //MARK: - Private properties
     private let windowController: RootWindowController
     
     //MARK: -  init(_:)
     public init() {
-        self.window = RootWindow()
-        self.windowController = RootWindowController(rootWindow: window)
+        self.store = Store(
+            state: RootDomain.State(),
+            reducer: RootDomain()
+        )
+        self.windowController = RootWindowController(store: store)
     }
     
     //MARK: - Subscript

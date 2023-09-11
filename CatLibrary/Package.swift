@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "CatLibrary",
     platforms: [
-        .macOS(.v11)
+        .macOS(.v14)
     ],
     products: [
         InnerDependencies.Extensions.library,
