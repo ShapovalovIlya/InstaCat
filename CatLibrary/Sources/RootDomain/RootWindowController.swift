@@ -40,21 +40,14 @@ public final class RootWindowController: NSWindowController {
     
     //MARK: - Life Cycle
     public override func loadWindow() {
-        window?.backgroundColor = .white
-        window?.addStyleMasks(
-            .closable,
-            .miniaturizable,
-            .resizable,
-            .titled
-        )
-        window?.title = "InstaCat"
+        window?.windowController = self
+        configure(window: window)
         
         let toolbar = NSToolbar()
         toolbar.displayMode = .iconOnly
         toolbar.delegate = self
         
         window?.toolbar = toolbar
-        window?.toolbarStyle = .unifiedCompact
         
         let sideBarView = NSView()
         sideBarView.wantsLayer = true
@@ -77,20 +70,17 @@ public final class RootWindowController: NSWindowController {
         contentViewController = splitViewController
         window?.contentView = splitViewController?.splitView
         
-        
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
         
         windowWillLoad()
     }
     
     public override func windowWillLoad() {
-        
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
     }
 
     public override func windowDidLoad() {
-        
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
     }
     
@@ -114,7 +104,7 @@ extension RootWindowController: NSToolbarDelegate {
     
     public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-            .toggleSidebar
+            .toggleSidebar,
         ]
     }
     
@@ -128,11 +118,14 @@ extension RootWindowController: NSToolbarDelegate {
 
 private extension RootWindowController {
     //MARK: - Private methods
-    func setup(window: NSWindow?) {
-        let size: CGSize = .init(width: 600, height: 400)
-        let rect = NSRect(origin: .zero, size: size)
-        window?.setFrame(
-            rect,
-            display: true)
+    func configure(window: NSWindow?) {
+        window?.title = "InstaCat"
+        window?.addStyleMasks(
+            .closable,
+            .miniaturizable,
+            .resizable,
+            .titled
+        )
+        window?.toolbarStyle = .unifiedCompact
     }
 }
