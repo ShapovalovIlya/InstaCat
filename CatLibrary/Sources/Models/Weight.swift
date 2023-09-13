@@ -10,4 +10,12 @@ import Foundation
 public struct Weight: Decodable {
     public let imperial: String
     public let metric: String
+    
+    public init(
+        imperial: String,
+        metric: String
+    ) {
+        self.imperial = imperial
+        self.metric = metric
+    }
 }

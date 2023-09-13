@@ -23,13 +23,13 @@ let package = Package(
         .target(
             name: "Dependencies", 
             dependencies: [
-                OuterDependencies.SwiftFP.target
+                OuterDependencies.SwiftFP.target,
             ]),
         .target(
             name: "CatCore",
             dependencies: [
                 InnerDependencies.Extensions.target,
-                "RootDomain"
+                "RootDomain",
             ]),
         .target(
             name: "RootDomain",
@@ -38,14 +38,15 @@ let package = Package(
                 InnerDependencies.Dependencies.target,
                 InnerDependencies.Models.target,
                 OuterDependencies.Kingfisher.target,
-                OuterDependencies.SwiftUDF.target
+                OuterDependencies.SwiftUDF.target,
+                "SideBarDomain",
             ]),
         .target(
             name: "SideBarDomain",
             dependencies: [
                 InnerDependencies.Extensions.target,
                 InnerDependencies.Models.target,
-                OuterDependencies.SwiftUDF.target
+                OuterDependencies.SwiftUDF.target,
             ]),
     ]
 )

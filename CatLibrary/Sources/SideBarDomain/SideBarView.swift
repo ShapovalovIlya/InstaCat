@@ -63,9 +63,9 @@ private extension SideBarView {
             height: 0.1,
             items: item
         )
-        let header = makeHeaderWithDimensions(width: 1, height: 0.1)
+//        let header = makeHeaderWithDimensions(width: 1, height: 0.1)
         let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [header]
+ //       section.boundarySupplementaryItems = [header]
         
         return NSCollectionViewCompositionalLayout(section: section)
     }

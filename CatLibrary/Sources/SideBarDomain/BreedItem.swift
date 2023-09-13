@@ -7,7 +7,7 @@
 
 import Cocoa
 
-class BreedItem: NSCollectionViewItem {
+final class BreedItem: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,3 +15,9 @@ class BreedItem: NSCollectionViewItem {
     }
     
 }
+
+import SwiftUI
+#Preview {
+    BreedItem()
+}
+

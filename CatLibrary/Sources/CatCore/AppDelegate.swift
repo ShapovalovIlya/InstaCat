@@ -24,7 +24,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
     //MARK: - Public methods
     public func applicationDidFinishLaunching(_ aNotification: Notification) {
         rootDomainProvider.showWindow()
-        rootDomainProvider
+        
     }
 
     public func applicationWillTerminate(_ aNotification: Notification) {

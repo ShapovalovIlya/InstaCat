@@ -10,15 +10,16 @@ import AppKit
 import OSLog
 import Extensions
 import SwiftUDF
+import SideBarDomain
 
 public final class RootWindowController: NSWindowController {
     //MARK: - Public properties
     
     //MARK: - Private properties
     private let store: StoreOf<RootDomain>
-    private let sideBarController = NSViewController()
     private let contentController = NSViewController()
     private var splitViewController: NSSplitViewController?
+    private lazy var sideBarProvider = SideBarProvider()
     
     //MARK: - init(_:)
     public init(store: StoreOf<RootDomain>) {
@@ -48,22 +49,16 @@ public final class RootWindowController: NSWindowController {
         toolbar.delegate = self
         
         window?.toolbar = toolbar
-        
-        let sideBarView = NSView()
-        sideBarView.wantsLayer = true
-        sideBarView.layer?.backgroundColor = NSColor.red.cgColor
-        sideBarView.setFrameSize(.init(width: 200, height: 400))
-        
+               
         let contentBarView = NSView()
         contentBarView.wantsLayer = true
         contentBarView.layer?.backgroundColor = NSColor.green.cgColor
         contentBarView.setFrameSize(.init(width: 400, height: 400))
         
-        sideBarController.view = sideBarView
         contentController.view = contentBarView
         
         splitViewController = NSSplitViewController(
-            sideBarController: sideBarController,
+            sideBarController: sideBarProvider.viewController,
             contentController: contentController
         )
         
