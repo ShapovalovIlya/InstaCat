@@ -13,20 +13,16 @@ public protocol SideBarViewProtocol: NSView {
 
 public class SideBarView: NSView, SideBarViewProtocol {
     //MARK: - Public properties
-    public let collection: NSCollectionView = .init()
+    public let collection: NSCollectionView = makeCollectionView()
     
     //MARK: - Private properties
-    private let scroll: NSScrollView = .init()
+    private let scroll: NSScrollView = makeScrollView()
     
     //MARK: - init(_:)
     public init() {
         super.init(frame: .init(x: 0, y: 0, width: 200, height: 400))
-
+        
         collection.collectionViewLayout = makeLayout()
-
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.drawsBackground = false
-        scroll.horizontalScroller?.alphaValue = 0
         scroll.documentView = collection
         addSubview(scroll)
     }
@@ -63,23 +59,8 @@ private extension SideBarView {
             height: 0.1,
             items: item
         )
-//        let header = makeHeaderWithDimensions(width: 1, height: 0.1)
         let section = NSCollectionLayoutSection(group: group)
- //       section.boundarySupplementaryItems = [header]
-        
         return NSCollectionViewCompositionalLayout(section: section)
-    }
-    
-    func makeHeaderWithDimensions(
-        width: CGFloat,
-        height: CGFloat
-    ) -> NSCollectionLayoutBoundarySupplementaryItem {
-        let size = makeFractionalSize(width: width, height: height)
-        return NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: size,
-            elementKind: NSCollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
     }
     
     func makeGroupWithDimensions(
@@ -111,9 +92,20 @@ private extension SideBarView {
             heightDimension: .fractionalHeight(height)
         )
     }
-}
-
-import SwiftUI
-#Preview {
-    SideBarView()
+    
+    static func makeCollectionView() -> NSCollectionView {
+        let collection = NSCollectionView()
+        collection.isSelectable = true
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        return collection
+    }
+    
+    static func makeScrollView() -> NSScrollView {
+        let scroll = NSScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.drawsBackground = false
+        scroll.horizontalScroller?.alphaValue = 0
+        scroll.verticalScroller?.alphaValue = 0
+        return scroll
+    }
 }

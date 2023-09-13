@@ -13,8 +13,6 @@ import OSLog
 public final class SideBarController: NSViewController {
     //MARK: - Private properties
     private let sideBarView: SideBarViewProtocol
-    private let itemIdentifier = NSUserInterfaceItemIdentifier("ItemIdentifier")
-//    private let headerIdentifier = NSUserInterfaceItemIdentifier("HeaderIdentifier")
     private lazy var dataSource: NSCollectionViewDiffableDataSource<Int, String> = .init(
         collectionView: sideBarView.collection,
         itemProvider: makeItemProvider()
@@ -48,18 +46,8 @@ public final class SideBarController: NSViewController {
     }
     
     public override func viewDidLoad() {
-        
-        sideBarView.collection.register(
-            NSCollectionViewItem.self,
-            forItemWithIdentifier: itemIdentifier
-        )
+        configure(sideBarView.collection)
         sideBarView.collection.dataSource = dataSource
-//        sideBarView.collection.register(
-//            <#T##viewClass: AnyClass?##AnyClass?#>,
-//            forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
-//            withIdentifier: <#T##NSUserInterfaceItemIdentifier#>
-//        )
- //       dataSource.supplementaryViewProvider = makeHeaderProvider()
         
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
     }
@@ -71,7 +59,24 @@ public final class SideBarController: NSViewController {
     
 }
 
+extension SideBarController: NSCollectionViewDelegate {
+    public func collectionView(
+        _ collectionView: NSCollectionView,
+        didSelectItemsAt indexPaths: Set<IndexPath>
+    ) {
+        print("select item at: \(indexPaths)")
+    }
+}
+
 private extension SideBarController {
+    func configure(_ collectionView: NSCollectionView) {
+        collectionView.register(
+            BreedItem.self,
+            forItemWithIdentifier: BreedItem.identifier
+        )
+        collectionView.delegate = self
+    }
+    
     func updateDataSource(with titles: [String]) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
         snapshot.appendSections([0])
@@ -80,13 +85,14 @@ private extension SideBarController {
     }
     
     func makeItemProvider() -> NSCollectionViewDiffableDataSource<Int, String>.ItemProvider {
-        { [unowned self] collectionView, indexPath, title in
-            let item = collectionView.makeItem(
-                withIdentifier: itemIdentifier,
+        { collectionView, indexPath, title in
+            guard let item = collectionView.makeItem(
+                withIdentifier: BreedItem.identifier,
                 for: indexPath
-            )
-            item.textField?.backgroundColor = NSColor.white
-            item.title = title
+            ) as? BreedItem else {
+                fatalError()
+            }
+            item.setText(title)
             return item
         }
     }
