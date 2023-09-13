@@ -22,6 +22,9 @@ public struct SideBarProvider {
             state: SideBarDomain.State(),
             reducer: SideBarDomain()
         )
-        viewController = SideBarController(sideBarView: view)
+        viewController = SideBarController(
+            sideBarView: view,
+            store: store
+        )
     }
 }

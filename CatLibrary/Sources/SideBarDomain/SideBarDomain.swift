@@ -22,4 +22,9 @@ public struct SideBarDomain: ReducerDomain {
     public func reduce(_ state: inout State, action: Action) -> AnyPublisher<Action, Never> {
         
     }
+    
+    static let previewStore = Store(
+        state: Self.State(),
+        reducer: Self()
+    )
 }

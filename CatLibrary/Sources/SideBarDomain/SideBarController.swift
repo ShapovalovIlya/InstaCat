@@ -9,10 +9,12 @@ import Cocoa
 import SwiftUDF
 import Extensions
 import OSLog
+import Combine
 
 public final class SideBarController: NSViewController {
     //MARK: - Private properties
     private let sideBarView: SideBarViewProtocol
+    private let store: StoreOf<SideBarDomain>
     private lazy var dataSource: NSCollectionViewDiffableDataSource<Int, String> = .init(
         collectionView: sideBarView.collection,
         itemProvider: makeItemProvider()
@@ -20,9 +22,11 @@ public final class SideBarController: NSViewController {
     
     //MARK: - init(_:)
     public init(
-        sideBarView: SideBarViewProtocol
+        sideBarView: SideBarViewProtocol,
+        store: StoreOf<SideBarDomain>
     ) {
         self.sideBarView = sideBarView
+        self.store = store
         super.init(nibName: nil, bundle: nil)
         
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
@@ -54,6 +58,11 @@ public final class SideBarController: NSViewController {
     
     public override func viewWillAppear() {
         updateDataSource(with: ["one", "two", "three"])
+        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+    }
+    
+    public override func viewDidDisappear() {
+        store.dispose()
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
     }
     
@@ -100,5 +109,8 @@ private extension SideBarController {
 
 import SwiftUI
 #Preview {
-    SideBarController(sideBarView: SideBarView())
+    SideBarController(
+        sideBarView: SideBarView(),
+        store: SideBarDomain.previewStore
+    )
 }
