@@ -8,6 +8,7 @@
 import AppKit
 import Extensions
 import SwiftUDF
+import Combine
 
 @dynamicMemberLookup
 public struct RootDomainProvider {
@@ -20,7 +21,7 @@ public struct RootDomainProvider {
     public init() {
         self.store = Store(
             state: RootDomain.State(),
-            reducer: RootDomain()
+            reducer: RootDomain(breedsPublisher: { _ in Fail(error: URLError(.badURL)).eraseToAnyPublisher() })
         )
         self.windowController = RootWindowController(store: store)
     }

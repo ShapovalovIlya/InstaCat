@@ -21,7 +21,7 @@ public struct Breed: Decodable, Identifiable {
     public let description: String
     public let lifeSpan: String
     public let indoor: Bool
-    public let lap: Int
+    public let lap: Bool?
     public let altNames: String
     public let adaptability: Int
     public let affectionLevel: Int
@@ -60,7 +60,7 @@ public struct Breed: Decodable, Identifiable {
         description: String,
         lifeSpan: String,
         indoor: Bool,
-        lap: Int,
+        lap: Bool?,
         altNames: String,
         adaptability: Int,
         affectionLevel: Int,
@@ -123,4 +123,44 @@ public struct Breed: Decodable, Identifiable {
         self.hypoallergenic = hypoallergenic
         self.referenceImageID = referenceImageID
     }
+    
+    public static let sample = Self(
+        weight: .sample,
+        id: "abys",
+        name: "Abyssinian",
+        cfaURL: "http://cfa.org/Breeds/BreedsAB/Abyssinian.aspx",
+        vetstreetURL: "http://www.vetstreet.com/cats/abyssinian",
+        vcahospitalsURL: "https://vcahospitals.com/know-your-pet/cat-breeds/abyssinian",
+        temperament: "Active, Energetic, Independent, Intelligent, Gentle",
+        origin: "Egypt",
+        countryCodes: "EG",
+        countryCode: "EG",
+        description: "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals.",
+        lifeSpan: "14 - 15",
+        indoor: false,
+        lap: true,
+        altNames: "",
+        adaptability: 5,
+        affectionLevel: 5,
+        childFriendly: 3,
+        dogFriendly: 4,
+        energyLevel: 5,
+        grooming: 1,
+        healthIssues: 2,
+        intelligence: 5,
+        sheddingLevel: 2,
+        socialNeeds: 5,
+        strangerFriendly: 5,
+        vocalisation: 1,
+        experimental: false,
+        hairless: false,
+        natural: true,
+        rare: false,
+        rex: false,
+        suppressedTail: false,
+        shortLegs: false,
+        wikipediaURL: "https://en.wikipedia.org/wiki/Abyssinian_(cat)",
+        hypoallergenic: false,
+        referenceImageID: "0XYvRd7oD"
+    )
 }

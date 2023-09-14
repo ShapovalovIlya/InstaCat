@@ -36,8 +36,8 @@ public struct Endpoint {
     }
     
     //MARK: - Methods
-    static let breeds = Self(path: "breeds")
-    static func photos(
+    public static let breeds = Self(path: "breeds")
+    public static func photos(
         breedIDs: String...,
         limit: Int = 10,
         page: Int = 0

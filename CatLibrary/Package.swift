@@ -48,6 +48,15 @@ let package = Package(
                 InnerDependencies.Models.target,
                 OuterDependencies.SwiftUDF.target,
             ]),
+        .testTarget(
+            name: "AppTests",
+            dependencies: [
+                InnerDependencies.Extensions.target,
+                InnerDependencies.Models.target,
+                OuterDependencies.SwiftUDF.target,
+                "RootDomain",
+                "SideBarDomain",
+            ])
     ]
 )
 

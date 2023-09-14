@@ -19,6 +19,7 @@ public final class SideBarController: NSViewController {
         collectionView: sideBarView.collection,
         itemProvider: makeItemProvider()
     )
+    private var cancellable: Set<AnyCancellable> = .init()
     
     //MARK: - init(_:)
     public init(
@@ -52,6 +53,7 @@ public final class SideBarController: NSViewController {
     public override func viewDidLoad() {
         configure(sideBarView.collection)
         sideBarView.collection.dataSource = dataSource
+        
         
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
     }

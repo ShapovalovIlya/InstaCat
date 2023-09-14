@@ -67,15 +67,12 @@ public final class RootWindowController: NSWindowController {
         
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
         
-        windowWillLoad()
-    }
-    
-    public override func windowWillLoad() {
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
     }
 
     public override func windowDidLoad() {
+        store.send(.windowDidLoad)
+        
         Logger.viewCycle.log(level: .debug, domain: self, event: #function)
     }
     
@@ -83,6 +80,10 @@ public final class RootWindowController: NSWindowController {
     public override func showWindow(_ sender: Any?) {
         window?.makeKeyAndOrderFront(sender)
         window?.center()
+    }
+    
+    @objc func refreshBreedContent() {
+        print(#function)
     }
 
 }
@@ -100,12 +101,14 @@ extension RootWindowController: NSToolbarDelegate {
     public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
             .toggleSidebar,
+            .refresh
         ]
     }
     
     public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-            .toggleSidebar
+            .toggleSidebar,
+            .refresh
         ]
     }
     

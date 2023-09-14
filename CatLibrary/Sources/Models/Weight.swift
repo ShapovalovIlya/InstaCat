@@ -18,4 +18,9 @@ public struct Weight: Decodable {
         self.imperial = imperial
         self.metric = metric
     }
+    
+    public static let sample = Self(
+        imperial: "7  -  10",
+        metric: "3 - 5"
+    )
 }
