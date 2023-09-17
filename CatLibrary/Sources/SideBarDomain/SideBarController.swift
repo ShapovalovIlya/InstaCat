@@ -85,7 +85,10 @@ extension SideBarController: NSCollectionViewDelegate {
         _ collectionView: NSCollectionView,
         didSelectItemsAt indexPaths: Set<IndexPath>
     ) {
-        print("select item at: \(indexPaths)")
+        guard let index = indexPaths.first?.item else {
+            return
+        }
+        store.send(.didSelectBreedAt(index))
     }
 }
 

@@ -50,7 +50,7 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         weight: Weight,
         id: String,
         name: String,
-        cfaURL: String,
+        cfaURL: String? = nil,
         vetstreetURL: String,
         vcahospitalsURL: String,
         temperament: String,
@@ -60,8 +60,8 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         description: String,
         lifeSpan: String,
         indoor: Int,
-        lap: Int?,
-        altNames: String?,
+        lap: Int? = nil,
+        altNames: String? = nil,
         adaptability: Int,
         affectionLevel: Int,
         childFriendly: Int,
@@ -81,9 +81,9 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         rex: Int,
         suppressedTail: Int,
         shortLegs: Int,
-        wikipediaURL: String?,
+        wikipediaURL: String? = nil,
         hypoallergenic: Int,
-        referenceImageID: String?
+        referenceImageID: String? = nil
     ) {
         self.weight = weight
         self.id = id

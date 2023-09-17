@@ -70,10 +70,16 @@ public final class RootWindowController: NSWindowController {
         contentViewController = splitViewController
         window?.contentView = splitViewController?.splitView
         
+        sideBarProvider.store.$state
+            .compactMap(\.selectedBreed)
+            .removeDuplicates()
+            .sink(receiveValue: { print($0.name) })
+            .store(in: &cancellable)
+        
         sharedStatePublisher
             .map(\.breeds)
             .removeDuplicates()
-            .sink { self.sideBarProvider.store.send(.loadBreeds($0)) }
+            .sink { self.sideBarProvider.store.send(.setBreeds($0)) }
             .store(in: &cancellable)
         
         sharedStatePublisher
