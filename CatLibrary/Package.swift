@@ -24,6 +24,7 @@ let package = Package(
             name: "Dependencies", 
             dependencies: [
                 OuterDependencies.SwiftFP.target,
+                InnerDependencies.Extensions.target,
             ]),
         .target(
             name: "CatCore",

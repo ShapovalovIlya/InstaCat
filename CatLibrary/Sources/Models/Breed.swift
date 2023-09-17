@@ -11,18 +11,18 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
     public let weight: Weight
     public let id: String
     public let name: String
-    public let cfaURL: String
-    public let vetstreetURL: String
-    public let vcahospitalsURL: String
+    public let cfaURL: String?
+    public let vetstreetURL: String?
+    public let vcahospitalsURL: String?
     public let temperament: String
     public let origin: String
     public let countryCodes: String
     public let countryCode: String
     public let description: String
     public let lifeSpan: String
-    public let indoor: Bool
-    public let lap: Bool?
-    public let altNames: String
+    public let indoor: Int
+    public let lap: Int?
+    public let altNames: String?
     public let adaptability: Int
     public let affectionLevel: Int
     public let childFriendly: Int
@@ -35,16 +35,16 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
     public let socialNeeds: Int
     public let strangerFriendly: Int
     public let vocalisation: Int
-    public let experimental: Bool
-    public let hairless: Bool
-    public let natural: Bool
-    public let rare: Bool
-    public let rex: Bool
-    public let suppressedTail: Bool
-    public let shortLegs: Bool
-    public let wikipediaURL: String
-    public let hypoallergenic: Bool
-    public let referenceImageID: String
+    public let experimental: Int
+    public let hairless: Int
+    public let natural: Int
+    public let rare: Int
+    public let rex: Int
+    public let suppressedTail: Int
+    public let shortLegs: Int
+    public let wikipediaURL: String?
+    public let hypoallergenic: Int
+    public let referenceImageID: String?
     
     public init(
         weight: Weight,
@@ -59,9 +59,9 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         countryCode: String,
         description: String,
         lifeSpan: String,
-        indoor: Bool,
-        lap: Bool?,
-        altNames: String,
+        indoor: Int,
+        lap: Int?,
+        altNames: String?,
         adaptability: Int,
         affectionLevel: Int,
         childFriendly: Int,
@@ -74,16 +74,16 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         socialNeeds: Int,
         strangerFriendly: Int,
         vocalisation: Int,
-        experimental: Bool,
-        hairless: Bool,
-        natural: Bool,
-        rare: Bool,
-        rex: Bool,
-        suppressedTail: Bool,
-        shortLegs: Bool,
-        wikipediaURL: String,
-        hypoallergenic: Bool,
-        referenceImageID: String
+        experimental: Int,
+        hairless: Int,
+        natural: Int,
+        rare: Int,
+        rex: Int,
+        suppressedTail: Int,
+        shortLegs: Int,
+        wikipediaURL: String?,
+        hypoallergenic: Int,
+        referenceImageID: String?
     ) {
         self.weight = weight
         self.id = id
@@ -137,8 +137,8 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         countryCode: "EG",
         description: "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals.",
         lifeSpan: "14 - 15",
-        indoor: false,
-        lap: true,
+        indoor: 1,
+        lap: 1,
         altNames: "",
         adaptability: 5,
         affectionLevel: 5,
@@ -152,15 +152,15 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         socialNeeds: 5,
         strangerFriendly: 5,
         vocalisation: 1,
-        experimental: false,
-        hairless: false,
-        natural: true,
-        rare: false,
-        rex: false,
-        suppressedTail: false,
-        shortLegs: false,
+        experimental: 1,
+        hairless: 1,
+        natural: 1,
+        rare: 1,
+        rex: 1,
+        suppressedTail: 1,
+        shortLegs: 1,
         wikipediaURL: "https://en.wikipedia.org/wiki/Abyssinian_(cat)",
-        hypoallergenic: false,
+        hypoallergenic: 1,
         referenceImageID: "0XYvRd7oD"
     )
 }

@@ -10,6 +10,7 @@ import Extensions
 import SwiftUDF
 import Combine
 import OSLog
+import Dependencies
 
 import Models
 
@@ -20,18 +21,15 @@ public struct RootDomainProvider {
     
     //MARK: - Private properties
     private let windowController: RootWindowController
+    private let repository: Repository
     
     //MARK: -  init(_:)
     public init() {
-        let reducer = RootDomain(getRequest: { _ in
-            Just([Breed.sample])
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        })
+        self.repository = .init(logger: Logger.system)
+        let reducer = RootDomain(getRequest: repository.getRequest)
         self.store = Store(
             state: RootDomain.State(),
-            reducer: reducer,
-            logger: Logger.system
+            reducer: reducer
         )
         self.windowController = RootWindowController(
             store: store,

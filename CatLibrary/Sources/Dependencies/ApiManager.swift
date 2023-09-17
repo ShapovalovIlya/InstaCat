@@ -19,8 +19,8 @@ public struct ApiManager {
     //MARK: - Public properties
     
     //MARK: - init(_:)
-    public init(session: URLSession = .shared) {
-        self.session = session
+    public init(config: URLSessionConfiguration) {
+        self.session = URLSession(configuration: config)
         self.decoder = JSONDecoder()
         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
