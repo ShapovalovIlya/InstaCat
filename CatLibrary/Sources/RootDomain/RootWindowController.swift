@@ -11,22 +11,31 @@ import OSLog
 import Extensions
 import SwiftUDF
 import SideBarDomain
+import Combine
 
 public final class RootWindowController: NSWindowController {
     //MARK: - Public properties
     
     //MARK: - Private properties
     private let store: StoreOf<RootDomain>
+    private var logger: Logger?
+    private var cancellable: Set<AnyCancellable> = .init()
     private let contentController = NSViewController()
     private var splitViewController: NSSplitViewController?
+    
+    private lazy var sharedStatePublisher = store.$state.share()
     private lazy var sideBarProvider = SideBarProvider()
     
     //MARK: - init(_:)
-    public init(store: StoreOf<RootDomain>) {
+    public init(
+        store: StoreOf<RootDomain>,
+        logger: Logger? = nil
+    ) {
         self.store = store
+        self.logger = logger
         super.init(window: .init())
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
         loadWindow()
     }
     
@@ -36,19 +45,15 @@ public final class RootWindowController: NSWindowController {
     }
     
     deinit {
-        Logger.viewCycle.debug(#function)
+        store.dispose()
+        cancellable.removeAll()
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     //MARK: - Life Cycle
     public override func loadWindow() {
-        window?.windowController = self
         configure(window: window)
-        
-        let toolbar = NSToolbar()
-        toolbar.displayMode = .iconOnly
-        toolbar.delegate = self
-        
-        window?.toolbar = toolbar
+        window?.toolbar = makeToolbar()
                
         let contentBarView = NSView()
         contentBarView.wantsLayer = true
@@ -65,15 +70,26 @@ public final class RootWindowController: NSWindowController {
         contentViewController = splitViewController
         window?.contentView = splitViewController?.splitView
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        sharedStatePublisher
+            .map(\.breeds)
+            .removeDuplicates()
+            .sink { self.sideBarProvider.store.send(.loadBreeds($0)) }
+            .store(in: &cancellable)
         
+        sharedStatePublisher
+            .compactMap(\.selectedBreed)
+            .removeDuplicates()
+            .sink(receiveValue: { _ in })
+            .store(in: &cancellable)
+        
+        logger?.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
     }
 
     public override func windowDidLoad() {
         store.send(.windowDidLoad)
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     //MARK: - Public methods
@@ -117,6 +133,7 @@ extension RootWindowController: NSToolbarDelegate {
 private extension RootWindowController {
     //MARK: - Private methods
     func configure(window: NSWindow?) {
+        window?.windowController = self
         window?.title = "InstaCat"
         window?.addStyleMasks(
             .closable,
@@ -125,5 +142,12 @@ private extension RootWindowController {
             .titled
         )
         window?.toolbarStyle = .unifiedCompact
+    }
+    
+    func makeToolbar() -> NSToolbar {
+        let toolbar = NSToolbar()
+        toolbar.displayMode = .iconOnly
+        toolbar.delegate = self
+        return toolbar
     }
 }

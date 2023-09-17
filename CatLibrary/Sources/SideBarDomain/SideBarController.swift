@@ -10,32 +10,37 @@ import SwiftUDF
 import Extensions
 import OSLog
 import Combine
+import Models
 
 public final class SideBarController: NSViewController {
     //MARK: - Private properties
     private let sideBarView: SideBarViewProtocol
     private let store: StoreOf<SideBarDomain>
+    private var cancellable: Set<AnyCancellable> = .init()
+    private var logger: Logger?
+    
     private lazy var dataSource: NSCollectionViewDiffableDataSource<Int, String> = .init(
         collectionView: sideBarView.collection,
         itemProvider: makeItemProvider()
     )
-    private var cancellable: Set<AnyCancellable> = .init()
     
     //MARK: - init(_:)
     public init(
         sideBarView: SideBarViewProtocol,
-        store: StoreOf<SideBarDomain>
+        store: StoreOf<SideBarDomain>,
+        logger: Logger? = nil
     ) {
         self.sideBarView = sideBarView
         self.store = store
+        self.logger = logger
         super.init(nibName: nil, bundle: nil)
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     //MARK: - deinit
     deinit {
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     @available(*, unavailable)
@@ -47,25 +52,30 @@ public final class SideBarController: NSViewController {
     public override func loadView() {
         self.view = sideBarView
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     public override func viewDidLoad() {
         configure(sideBarView.collection)
         sideBarView.collection.dataSource = dataSource
         
+        store.$state
+            .map(\.breeds)
+            .removeDuplicates()
+            .sink(receiveValue: updateDataSource)
+            .store(in: &cancellable)
         
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     public override func viewWillAppear() {
-        updateDataSource(with: ["one", "two", "three"])
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     public override func viewDidDisappear() {
         store.dispose()
-        Logger.viewCycle.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
 }
@@ -88,10 +98,10 @@ private extension SideBarController {
         collectionView.delegate = self
     }
     
-    func updateDataSource(with titles: [String]) {
+    func updateDataSource(with breeds: [Breed]) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
         snapshot.appendSections([0])
-        snapshot.appendItems(titles, toSection: 0)
+        snapshot.appendItems(breeds.map(\.name), toSection: 0)
         dataSource.apply(snapshot)
     }
     

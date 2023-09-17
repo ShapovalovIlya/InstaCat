@@ -1,6 +1,6 @@
 //
 //  Cache.swift
-//  BestRecipes
+//  
 //
 //  Created by Илья Шаповалов on 07.09.2023.
 //
@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 import Extensions
 
-final class Cache<Key: Hashable, Value> {
+public final class Cache<Key: Hashable, Value> {
     //MARK: - Private properties
     private let wrapped = NSCache<WrappedKey, Entry>()
     private let dateProvider: () -> Date
@@ -18,7 +18,7 @@ final class Cache<Key: Hashable, Value> {
     private var logger: Logger?
     
     //MARK: - init(_:)
-    init(
+    public init(
         dateProvider: @escaping () -> Date = Date.init,
         entryLifeTime: TimeInterval = 12 * 60 * 60,
         maximumEntryCount: Int = 50
@@ -167,7 +167,7 @@ private extension Cache {
 }
 
 extension Cache: Codable where Key: Codable, Value: Codable {
-    convenience init(from decoder: Decoder) throws {
+    convenience public init(from decoder: Decoder) throws {
         self.init()
         
         let container = try decoder.singleValueContainer()
@@ -175,7 +175,7 @@ extension Cache: Codable where Key: Codable, Value: Codable {
         entries.forEach(insert)
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(keyTracker.keys.compactMap(entry))
     }

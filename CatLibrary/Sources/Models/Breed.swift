@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Breed: Decodable, Identifiable {
+public struct Breed: Decodable, Identifiable, Equatable, Hashable {
     public let weight: Weight
     public let id: String
     public let name: String

@@ -16,14 +16,23 @@ public struct RootDomain: ReducerDomain {
     public typealias BreedRequest = (Endpoint) -> AnyPublisher<[Breed], Error>
     
     //MARK: - State
-    public struct State {
+    public struct State: Equatable {
+        public var breeds: [Breed]
+        public var selectedBreed: Breed?
         
-        public init() {}
+        public init(
+            breeds: [Breed] = .init(),
+            selectedBreed: Breed? = nil
+        ) {
+            self.breeds = breeds
+            self.selectedBreed = selectedBreed
+        }
     }
     
     //MARK: - Action
     public enum Action: Equatable {
         case windowDidLoad
+        case setSelectedBreed(Breed)
         case _fetchBreedsRequest
         case _fetchBreedsResponse(Result<[Breed], Error>)
         
@@ -33,11 +42,11 @@ public struct RootDomain: ReducerDomain {
     }
     
     //MARK: - Dependencies
-    private let breedsPublisher: BreedRequest
+    private let getRequest: BreedRequest
     
     //MARK: - init(_:)
-    public init(breedsPublisher: @escaping BreedRequest) {
-        self.breedsPublisher = breedsPublisher
+    public init(getRequest: @escaping BreedRequest) {
+        self.getRequest = getRequest
     }
     
     //MARK: - Reducer
@@ -47,16 +56,19 @@ public struct RootDomain: ReducerDomain {
             return run(._fetchBreedsRequest)
             
         case ._fetchBreedsRequest:
-            return breedsPublisher(.breeds)
+            return getRequest(.breeds)
                 .map(toSuccessAction)
                 .catch(toFailureAction)
                 .eraseToAnyPublisher()
             
         case let ._fetchBreedsResponse(.success(breeds)):
-            break
+            state.breeds = breeds
             
         case let ._fetchBreedsResponse(.failure(error)):
-            break
+            print(error)
+            
+        case let .setSelectedBreed(breed):
+            state.selectedBreed = breed
         }
         
         return empty()

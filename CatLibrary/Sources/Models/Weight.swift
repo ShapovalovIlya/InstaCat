@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Weight: Decodable {
+public struct Weight: Decodable, Equatable, Hashable {
     public let imperial: String
     public let metric: String
     
