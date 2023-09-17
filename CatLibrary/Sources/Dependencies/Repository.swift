@@ -27,22 +27,26 @@ public struct Repository {
         config.waitsForConnectivity = true
         config.timeoutIntervalForResource = timeoutInterval
         
-        apiManager = .init(config: config)
+        self.logger = logger
+        apiManager = .init(
+            config: config,
+            logger: logger
+        )
         cache = .init(
             entryLifeTime: cacheLifeTime,
-            maximumEntryCount: maximumEntryCount
+            maximumEntryCount: maximumEntryCount,
+            logger: logger
         )
     }
     
     //MARK: - Public methods
     public func getRequest<T: Decodable>(_ endpoint: Endpoint) -> AnyPublisher<T, Error> {
-        logger?.log(level: .debug, domain: self, event: #function)
-        return apiManager.getRequest(endpoint)
-//        return cache.value(forKey: endpoint.url)
-//            .publisher
-//            .tryMap(tryCast)
-//            .catch { _ in sendApiRequest(to: endpoint) }
-//            .eraseToAnyPublisher()
+        logger?.log(level: .debug, domain: Self.self, event: #function)
+        return cache.value(forKey: endpoint.url)
+            .throwingPublisher
+            .tryMap(tryCast)
+            .catch { _ in sendApiRequest(to: endpoint) }
+            .eraseToAnyPublisher()
     }
     
 }
@@ -57,13 +61,13 @@ private extension Repository {
     }
     
     private func cache<T: Decodable>(value: T, forKey key: URL) -> T {
-        logger?.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: Self.self, event: #function)
         cache.insert(value, forKey: key)
         return value
     }
     
     private func sendApiRequest<T: Decodable>(to endpoint: Endpoint) -> AnyPublisher<T, Error> {
-        logger?.log(level: .debug, domain: self, event: #function)
+        logger?.log(level: .debug, domain: Self.self, event: #function)
         return apiManager
             .getRequest(endpoint)
             .map { cache(value: $0, forKey: endpoint.url) }

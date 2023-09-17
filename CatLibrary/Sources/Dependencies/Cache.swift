@@ -8,6 +8,7 @@
 import Foundation
 import OSLog
 import Extensions
+import Combine
 
 public final class Cache<Key: Hashable, Value> {
     //MARK: - Private properties
@@ -21,10 +22,12 @@ public final class Cache<Key: Hashable, Value> {
     public init(
         dateProvider: @escaping () -> Date = Date.init,
         entryLifeTime: TimeInterval = 12 * 60 * 60,
-        maximumEntryCount: Int = 50
+        maximumEntryCount: Int = 50,
+        logger: Logger? = nil
     ) {
         self.dateProvider = dateProvider
         self.entryLifeTime = entryLifeTime
+        self.logger = logger
         wrapped.countLimit = maximumEntryCount
         wrapped.delegate = keyTracker
         

@@ -15,7 +15,7 @@ public struct Endpoint {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.thecatapi.com"
-        components.path = ["/v1", path].joined(separator: "/")
+        components.path = ["/v1/", path].joined()
         
         if !queryItems.isEmpty {
             components.queryItems = queryItems

@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import SwiftFP
+import OSLog
 
 public struct ApiManager {
     typealias Response = (data: Data, response: URLResponse)
@@ -15,19 +16,26 @@ public struct ApiManager {
     //MARK: - Private properties
     private let session: URLSession
     private let decoder: JSONDecoder
+    private var logger: Logger?
     
     //MARK: - Public properties
     
     //MARK: - init(_:)
-    public init(config: URLSessionConfiguration) {
+    public init(
+        config: URLSessionConfiguration,
+        logger: Logger? = nil
+    ) {
         self.session = URLSession(configuration: config)
         self.decoder = JSONDecoder()
         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self.logger = logger
     }
     
     //MARK: - Public methods
     public func getRequest<T: Decodable>(_ endpoint: Endpoint) -> AnyPublisher<T, Error> {
-        compose(
+        logger?.log(level: .debug, domain: Self.self, event: #function)
+        
+        return compose(
             createRequest(method: .GET),
             mapToPublisher(session: session)
         )(endpoint.url)
@@ -78,6 +86,9 @@ private extension ApiManager {
     }
     
     func parseResponse(_ response: Response) throws -> Data {
+        logger?.log(level: .debug, domain: Self.self, event: #function)
+        logger?.log(level: .debug, domain: Self.self, event: String(describing: response.response))
+        
         guard let httpResponse = response.response as? HTTPURLResponse else {
             throw URLError(.cannotParseResponse)
         }
