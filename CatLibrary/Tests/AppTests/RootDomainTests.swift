@@ -15,31 +15,21 @@ final class RootDomainTests: XCTestCase {
     private var sut: RootDomain!
     private var state: RootDomain.State!
     private var spy: ReducerSpy<RootDomain.Action>!
-    private var testModel: Breed!
-    private var testError: URLError!
 
     override func setUp() async throws {
         try await super.setUp()
         
         sut = .init(getRequest: { _ in
-            Empty(
-                outputType: [Breed].self,
-                failureType: Error.self
-            )
-            .eraseToAnyPublisher()
+            Empty().eraseToAnyPublisher()
         })
         state = .init()
         spy = .init()
-        testModel = breedModel
-        testError = .init(.badURL)
     }
     
     override func tearDown() async throws {
         sut = nil
         state = nil
         spy = nil
-        testModel = nil
-        testError = nil
         
         try await super.tearDown()
     }
@@ -53,8 +43,8 @@ final class RootDomainTests: XCTestCase {
     }
     
     func test_fetchBreedsRequestEndWithSuccess() {
-        sut = .init(getRequest: { [unowned self] _ in
-            Just([testModel])
+        sut = .init(getRequest: { _ in
+            Just([testBreedModel])
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         })
@@ -63,11 +53,12 @@ final class RootDomainTests: XCTestCase {
             sut.reduce(&state, action: ._fetchBreedsRequest)
         )
         
-        XCTAssertEqual(spy.actions.first, ._fetchBreedsResponse(.success([testModel])))
+        XCTAssertEqual(spy.actions.count, 1)
+        XCTAssertEqual(spy.actions.first, ._fetchBreedsResponse(.success([testBreedModel])))
     }
     
     func test_fetchBreedsRequestEndWithError() {
-        sut = .init(getRequest: { [unowned self] _ in
+        sut = .init(getRequest: { _ in
             Fail(error: testError)
                 .eraseToAnyPublisher()
         })
@@ -76,18 +67,19 @@ final class RootDomainTests: XCTestCase {
             sut.reduce(&state, action: ._fetchBreedsRequest)
         )
         
+        XCTAssertEqual(spy.actions.count, 1)
         XCTAssertEqual(spy.actions.first, ._fetchBreedsResponse(.failure(testError)))
     }
     
     func test_reduceSuccessFetchBreedResponse() {
-        _ = sut.reduce(&state, action: ._fetchBreedsResponse(.success([testModel])))
+        _ = sut.reduce(&state, action: ._fetchBreedsResponse(.success([testBreedModel])))
         
-        XCTAssertEqual(state.breeds, [testModel])
+        XCTAssertEqual(state.breeds, [testBreedModel])
     }
     
     func test_reduceSetSelectedBreed() {
-        _ = sut.reduce(&state, action: .setSelectedBreed(testModel))
+        _ = sut.reduce(&state, action: .setSelectedBreed(testBreedModel))
         
-        XCTAssertEqual(state.selectedBreed, testModel)
+        XCTAssertEqual(state.selectedBreed, testBreedModel)
     }
 }

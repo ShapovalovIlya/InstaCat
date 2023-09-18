@@ -122,15 +122,13 @@ extension RootWindowController: NSToolbarDelegate {
     
     public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-            .toggleSidebar,
-            .refresh
+            .toggleSidebar
         ]
     }
     
     public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         [
-            .toggleSidebar,
-            .refresh
+            .toggleSidebar
         ]
     }
     
@@ -145,9 +143,11 @@ private extension RootWindowController {
             .closable,
             .miniaturizable,
             .resizable,
-            .titled
+            .titled,
+            .fullSizeContentView
         )
         window?.toolbarStyle = .unifiedCompact
+        window?.titlebarSeparatorStyle = .shadow
     }
     
     func makeToolbar() -> NSToolbar {

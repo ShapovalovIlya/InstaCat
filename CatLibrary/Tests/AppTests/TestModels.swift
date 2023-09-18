@@ -1,6 +1,6 @@
 //
-//  TestModel.swift
-//  
+//  TestModels.swift
+//
 //
 //  Created by Илья Шаповалов on 18.09.2023.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import Models
 
-let breedModel: Breed = .init(
+let testBreedModel: Breed = .init(
     weight: .init(imperial: "Baz", metric: "Bar"),
     id: "Baz",
     name: "Baz",
@@ -47,3 +47,12 @@ let breedModel: Breed = .init(
     hypoallergenic: 0,
     referenceImageID: "Baz"
 )
+
+let testBreedImageModel: BreedImage = .init(
+    id: "Baz",
+    url: "Bar",
+    width: 1,
+    height: 1
+)
+
+let testError: URLError = URLError(.timedOut)

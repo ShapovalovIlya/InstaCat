@@ -123,10 +123,10 @@ private extension SideBarController {
     }
 }
 
-import SwiftUI
-#Preview {
-    SideBarController(
-        sideBarView: SideBarView(),
-        store: SideBarDomain.previewStore
-    )
-}
+//import SwiftUI
+//#Preview {
+//    SideBarController(
+//        sideBarView: SideBarView(),
+//        store: SideBarDomain.previewStore
+//    )
+//}

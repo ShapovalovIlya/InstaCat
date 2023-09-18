@@ -13,34 +13,31 @@ import Models
 final class SideBarDomainTests: XCTestCase {
     private var sut: SideBarDomain!
     private var state: SideBarDomain.State!
-    private var testModel: Breed!
     
     override func setUp() async throws {
         try await super.setUp()
         
         sut = .init()
         state = .init()
-        testModel = breedModel
     }
     
     override func tearDown() async throws {
         sut = nil
         state = nil
-        testModel = nil
     }
     
     func test_reduceSetBreeds() {
-        _ = sut.reduce(&state, action: .setBreeds([testModel]))
+        _ = sut.reduce(&state, action: .setBreeds([testBreedModel]))
         
-        XCTAssertEqual(state.breeds, [testModel])
+        XCTAssertEqual(state.breeds, [testBreedModel])
     }
     
     func test_reduceSetSelectedBreed() {
-        state.breeds = [testModel]
+        state.breeds = [testBreedModel]
         
         _ = sut.reduce(&state, action: .didSelectBreedAt(0))
         
-        XCTAssertEqual(state.selectedBreed, testModel)
+        XCTAssertEqual(state.selectedBreed, testBreedModel)
     }
     
 }
