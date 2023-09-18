@@ -19,10 +19,7 @@ public final class SideBarController: NSViewController {
     private var cancellable: Set<AnyCancellable> = .init()
     private var logger: Logger?
     
-    private lazy var dataSource: NSCollectionViewDiffableDataSource<Int, String> = .init(
-        collectionView: sideBarView.collection,
-        itemProvider: makeItemProvider()
-    )
+    private lazy var dataSource: SideBarDataSource = .init(collectionView: sideBarView.collection)
     
     //MARK: - init(_:)
     init(
@@ -52,7 +49,6 @@ public final class SideBarController: NSViewController {
     //MARK: - Life Cycle
     public override func loadView() {
         self.view = sideBarView
-        
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
@@ -63,10 +59,15 @@ public final class SideBarController: NSViewController {
         store.$state
             .map(\.breeds)
             .removeDuplicates()
-            .sink(receiveValue: updateDataSource)
+            .sink(receiveValue: dataSource.reload(with:))
             .store(in: &cancellable)
         
         logger?.log(level: .debug, domain: self, event: #function)
+    }
+    
+    public override func viewWillAppear() {
+        super.viewWillAppear()
+        store.send(.viewWillAppear)
     }
     
     public override func viewDidDisappear() {
@@ -97,25 +98,6 @@ private extension SideBarController {
         )
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-    }
-    
-    func updateDataSource(with breeds: [Breed]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(breeds.map(\.name), toSection: 0)
-        dataSource.apply(snapshot)
-    }
-    
-    func makeItemProvider() -> NSCollectionViewDiffableDataSource<Int, String>.ItemProvider {
-        { collectionView, indexPath, title in
-            let item = collectionView.makeItem(
-                withIdentifier: BreedItem.identifier,
-                for: indexPath
-            ) as? BreedItem
-                    
-            item?.setText(title)
-            return item
-        }
     }
 }
 

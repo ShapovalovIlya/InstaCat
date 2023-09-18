@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUDF
 import OSLog
+import Dependencies
 
 public struct SideBarProvider {
     //MARK: - Public properties
@@ -16,13 +17,15 @@ public struct SideBarProvider {
     
     //MARK: - Private properties
     private let view: SideBarViewProtocol
+    private let repository: Repository
     
     public init() {
-        view = SideBarView()
+        repository = .init(logger: Logger.system)
         store = Store(
             state: SideBarDomain.State(),
-            reducer: SideBarDomain()
+            reducer: SideBarDomain(getRequest: repository.getRequest)
         )
+        view = SideBarView()
         viewController = SideBarController(
             sideBarView: view,
             store: store,

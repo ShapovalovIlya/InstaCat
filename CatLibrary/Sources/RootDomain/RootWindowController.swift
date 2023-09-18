@@ -23,7 +23,7 @@ public final class RootWindowController: NSWindowController {
     private let contentController = NSViewController()
     private var splitViewController: NSSplitViewController?
     
-    private lazy var sharedStatePublisher = store.$state.share()
+    private lazy var sharedState = store.$state.share().eraseToAnyPublisher()
     private lazy var sideBarProvider = SideBarProvider()
     
     //MARK: - init(_:)
@@ -76,24 +76,20 @@ public final class RootWindowController: NSWindowController {
             .sink(receiveValue: { print($0.name) })
             .store(in: &cancellable)
         
-        sharedStatePublisher
-            .map(\.breeds)
-            .removeDuplicates()
-            .sink { self.sideBarProvider.store.send(.setBreeds($0)) }
-            .store(in: &cancellable)
+ //       bind(sharedState, to: sideBarProvider.store)(&cancellable)
         
-        sharedStatePublisher
-            .compactMap(\.selectedBreed)
-            .removeDuplicates()
-            .sink(receiveValue: { _ in })
-            .store(in: &cancellable)
+//        sharedState
+//            .compactMap(\.selectedBreed)
+//            .removeDuplicates()
+//            .sink(receiveValue: { _ in })
+//            .store(in: &cancellable)
         
         logger?.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
     }
 
     public override func windowDidLoad() {
-        store.send(.windowDidLoad)
+        super.windowDidLoad()
         
         logger?.log(level: .debug, domain: self, event: #function)
     }
@@ -102,10 +98,6 @@ public final class RootWindowController: NSWindowController {
     public override func showWindow(_ sender: Any?) {
         window?.makeKeyAndOrderFront(sender)
         window?.center()
-    }
-    
-    @objc func refreshBreedContent() {
-        print(#function)
     }
 
 }
@@ -136,6 +128,19 @@ extension RootWindowController: NSToolbarDelegate {
 
 private extension RootWindowController {
     //MARK: - Private methods
+//    func bind(
+//        _ state: AnyPublisher<RootDomain.State, Never>,
+//        to store: StoreOf<SideBarDomain>
+//    ) -> (inout Set<AnyCancellable>) -> Void {
+//        { cancellable in
+//            state
+//                .map(\.breeds)
+//                .removeDuplicates()
+//                .sink { store.send(.setBreeds($0)) }
+//                .store(in: &cancellable)
+//        }
+//    }
+    
     func configure(window: NSWindow?) {
         window?.windowController = self
         window?.title = "InstaCat"
