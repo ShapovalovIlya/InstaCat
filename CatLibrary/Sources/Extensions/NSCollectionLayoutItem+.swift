@@ -12,7 +12,7 @@ public extension NSCollectionLayoutItem {
         width: CGFloat,
         height: CGFloat
     ) -> NSCollectionLayoutItem {
-        let size: NSCollectionLayoutSize = .fractional(width: width, height: height)
+        let size: NSCollectionLayoutSize = .combined(fractionalWidth: width, estimatedHeight: height)
         return NSCollectionLayoutItem(layoutSize: size)
     }
 }

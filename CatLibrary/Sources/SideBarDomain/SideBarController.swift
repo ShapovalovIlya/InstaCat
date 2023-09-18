@@ -25,7 +25,7 @@ public final class SideBarController: NSViewController {
     )
     
     //MARK: - init(_:)
-    public init(
+    init(
         sideBarView: SideBarViewProtocol,
         store: StoreOf<SideBarDomain>,
         logger: Logger? = nil

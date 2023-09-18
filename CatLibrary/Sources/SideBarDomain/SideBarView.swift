@@ -8,11 +8,11 @@
 import Cocoa
 import Extensions
 
-public protocol SideBarViewProtocol: NSView {
+protocol SideBarViewProtocol: NSView {
     var collection: NSCollectionView { get }
 }
 
-public class SideBarView: NSView, SideBarViewProtocol {
+final class SideBarView: NSView, SideBarViewProtocol {
     //MARK: - Public properties
     public let collection: NSCollectionView = .plain()
     
@@ -54,26 +54,13 @@ private extension SideBarView {
     }
     
     func makeLayout() -> NSCollectionViewLayout {
-        let item: NSCollectionLayoutItem = .fractional(width: 1, height: 1)
-        let group = makeGroupWithDimensions(
-            width: 1,
-            height: 0.1,
-            items: item
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 50),
+            subitem: .fractional(width: 1, height: 1),
+            count: 1
         )
+        
         let section = NSCollectionLayoutSection(group: group)
         return NSCollectionViewCompositionalLayout(section: section)
     }
-    
-    func makeGroupWithDimensions(
-        width: CGFloat,
-        height: CGFloat,
-        items: NSCollectionLayoutItem...
-    ) -> NSCollectionLayoutGroup {
-        let size: NSCollectionLayoutSize = .fractional(width: width, height: height)
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: size,
-            subitems: items)
-        return group
-    }
-    
 }

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NSCollectionLayoutSize.swift
 //  
 //
 //  Created by Илья Шаповалов on 18.09.2023.
@@ -8,13 +8,13 @@
 import AppKit
 
 public extension NSCollectionLayoutSize {
-    static func fractional(
-        width: CGFloat,
-        height: CGFloat
+    static func combined(
+        fractionalWidth: CGFloat,
+        estimatedHeight: CGFloat
     ) -> NSCollectionLayoutSize {
         .init(
-            widthDimension: .fractionalWidth(width),
-            heightDimension: .fractionalHeight(height)
+            widthDimension: .fractionalWidth(fractionalWidth),
+            heightDimension: .estimated(estimatedHeight)
         )
     }
 }
