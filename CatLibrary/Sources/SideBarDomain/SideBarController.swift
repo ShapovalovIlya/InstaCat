@@ -40,6 +40,7 @@ public final class SideBarController: NSViewController {
     
     //MARK: - deinit
     deinit {
+        cancellable.removeAll()
         logger?.log(level: .debug, domain: self, event: #function)
     }
     

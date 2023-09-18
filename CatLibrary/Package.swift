@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "CatCore", targets: ["CatCore"]),
         .library(name: "RootDomain", targets: ["RootDomain"]),
         .library(name: "SideBarDomain", targets: ["SideBarDomain"]),
+        .library(name: "ContentDomain", targets: ["ContentDomain"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
@@ -49,6 +50,13 @@ let package = Package(
                 InnerDependencies.Models.target,
                 OuterDependencies.SwiftUDF.target,
             ]),
+        .target(
+            name: "ContentDomain",
+            dependencies: [
+                InnerDependencies.Extensions.target,
+                InnerDependencies.Models.target,
+                OuterDependencies.SwiftUDF.target,
+            ]),
         .testTarget(
             name: "AppTests",
             dependencies: [
@@ -57,6 +65,7 @@ let package = Package(
                 OuterDependencies.SwiftUDF.target,
                 "RootDomain",
                 "SideBarDomain",
+                "ContentDomain",
             ])
     ]
 )

@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import Extensions
 
 public protocol SideBarViewProtocol: NSView {
     var collection: NSCollectionView { get }
@@ -13,10 +14,10 @@ public protocol SideBarViewProtocol: NSView {
 
 public class SideBarView: NSView, SideBarViewProtocol {
     //MARK: - Public properties
-    public let collection: NSCollectionView = makeCollectionView()
+    public let collection: NSCollectionView = .plain()
     
     //MARK: - Private properties
-    private let scroll: NSScrollView = makeScrollView()
+    private let scroll: NSScrollView = .plain()
     
     //MARK: - init(_:)
     public init() {
@@ -53,7 +54,7 @@ private extension SideBarView {
     }
     
     func makeLayout() -> NSCollectionViewLayout {
-        let item = makeItemWithDimensions(width: 1, height: 1)
+        let item: NSCollectionLayoutItem = .fractional(width: 1, height: 1)
         let group = makeGroupWithDimensions(
             width: 1,
             height: 0.1,
@@ -68,44 +69,11 @@ private extension SideBarView {
         height: CGFloat,
         items: NSCollectionLayoutItem...
     ) -> NSCollectionLayoutGroup {
-        let size = makeFractionalSize(width: width, height: height)
+        let size: NSCollectionLayoutSize = .fractional(width: width, height: height)
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: size,
             subitems: items)
         return group
     }
     
-    func makeItemWithDimensions(
-        width: CGFloat,
-        height: CGFloat
-    ) -> NSCollectionLayoutItem {
-        let size = makeFractionalSize(width: width, height: height)
-        return NSCollectionLayoutItem(layoutSize: size)
-    }
-    
-    func makeFractionalSize(
-        width: CGFloat,
-        height: CGFloat
-    ) -> NSCollectionLayoutSize {
-        NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(width),
-            heightDimension: .fractionalHeight(height)
-        )
-    }
-    
-    static func makeCollectionView() -> NSCollectionView {
-        let collection = NSCollectionView()
-        collection.isSelectable = true
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        return collection
-    }
-    
-    static func makeScrollView() -> NSScrollView {
-        let scroll = NSScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.drawsBackground = false
-        scroll.horizontalScroller?.alphaValue = 0
-        scroll.verticalScroller?.alphaValue = 0
-        return scroll
-    }
 }
