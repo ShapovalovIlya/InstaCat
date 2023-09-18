@@ -21,7 +21,7 @@ public final class Cache<Key: Hashable, Value> {
     //MARK: - init(_:)
     public init(
         dateProvider: @escaping () -> Date = Date.init,
-        entryLifeTime: TimeInterval = 12 * 60 * 60,
+        entryLifeTime: TimeInterval = .day,
         maximumEntryCount: Int = 50,
         logger: Logger? = nil
     ) {

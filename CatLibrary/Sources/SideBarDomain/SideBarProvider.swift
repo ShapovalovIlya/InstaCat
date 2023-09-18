@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUDF
+import OSLog
 
 public struct SideBarProvider {
     //MARK: - Public properties
@@ -24,7 +25,8 @@ public struct SideBarProvider {
         )
         viewController = SideBarController(
             sideBarView: view,
-            store: store
+            store: store,
+            logger: Logger.viewCycle
         )
     }
 }

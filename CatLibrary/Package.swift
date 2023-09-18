@@ -55,7 +55,9 @@ let package = Package(
             dependencies: [
                 InnerDependencies.Extensions.target,
                 InnerDependencies.Models.target,
+                InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
+                OuterDependencies.Kingfisher.target,
             ]),
         .testTarget(
             name: "AppTests",

@@ -57,8 +57,8 @@ public final class SideBarController: NSViewController {
     }
     
     public override func viewDidLoad() {
+        super.viewDidLoad()
         configure(sideBarView.collection)
-        sideBarView.collection.dataSource = dataSource
         
         store.$state
             .map(\.breeds)
@@ -69,12 +69,8 @@ public final class SideBarController: NSViewController {
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
-    public override func viewWillAppear() {
-
-        logger?.log(level: .debug, domain: self, event: #function)
-    }
-    
     public override func viewDidDisappear() {
+        super.viewDidDisappear()
         store.dispose()
         logger?.log(level: .debug, domain: self, event: #function)
     }
@@ -100,6 +96,7 @@ private extension SideBarController {
             forItemWithIdentifier: BreedItem.identifier
         )
         collectionView.delegate = self
+        collectionView.dataSource = dataSource
     }
     
     func updateDataSource(with breeds: [Breed]) {
@@ -111,13 +108,12 @@ private extension SideBarController {
     
     func makeItemProvider() -> NSCollectionViewDiffableDataSource<Int, String>.ItemProvider {
         { collectionView, indexPath, title in
-            guard let item = collectionView.makeItem(
+            let item = collectionView.makeItem(
                 withIdentifier: BreedItem.identifier,
                 for: indexPath
-            ) as? BreedItem else {
-                fatalError()
-            }
-            item.setText(title)
+            ) as? BreedItem
+                    
+            item?.setText(title)
             return item
         }
     }

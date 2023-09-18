@@ -18,4 +18,6 @@ struct Description: Hashable {
         description = breed.description
         temperament = breed.temperament
     }
+    
+    static let sample = Self(breed: .sample)
 }

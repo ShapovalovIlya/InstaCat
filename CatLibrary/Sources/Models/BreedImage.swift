@@ -8,10 +8,10 @@
 import Foundation
 
 public struct BreedImage: Decodable, Equatable, Hashable {
-    let id: String
-    let url: String
-    let width: Int
-    let height: Int
+    public let id: String
+    public let url: String
+    public let width: Int
+    public let height: Int
     
     public init(
         id: String,

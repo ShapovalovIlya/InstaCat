@@ -56,11 +56,13 @@ final class ContentController: NSViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
     override func viewDidDisappear() {
+        super.viewDidDisappear()
         store.dispose()
         logger?.log(level: .debug, domain: self, event: #function)
     }
@@ -77,55 +79,58 @@ private extension ContentController {
     //MARK: - Item
     enum Item: Hashable {
         case title(BreedImage)
-        
+        case description(Description)
     }
     
     //MARK: - Private methods
+    func setBindings() {
+        
+    }
+    
     func makeItemProvider() -> NSCollectionViewDiffableDataSource<Section, Item>.ItemProvider {
         { collectionView, indexPath, item in
             switch item {
             case let .title(breedImage):
                 let item = collectionView.makeItem(
-                    withIdentifier: .init(""),
-                    for: indexPath)
+                    withIdentifier: TitleItem.identifier,
+                    for: indexPath
+                ) as? TitleItem
                 
+                item?.configure(with: breedImage)
+                return item
                 
+            case let .description(description):
+                let item = collectionView.makeItem(
+                    withIdentifier: DescriptionItem.identifier,
+                    for: indexPath
+                ) as? DescriptionItem
+                
+                item?.configure(with: description)
                 return item
             }
             
-//            switch Section(rawValue: indexPath.section) {
-//            case .title:
-//                let item = collectionView.makeItem(
-//                    withIdentifier: .init(""),
-//                    for: indexPath)
-//                
-//                
-//                return item
-//            case .description:
-//                return nil
-//                
-//            case .properties:
-//                return nil
-//                
-//            case .links:
-//                return nil
-//                
-//            case .none: return nil
-//            }
         }
     }
     
     func setup(collectionView: NSCollectionView) {
+        collectionView.register(
+            TitleItem.self,
+            forItemWithIdentifier: TitleItem.identifier
+        )
+        collectionView.register(
+            DescriptionItem.self,
+            forItemWithIdentifier: DescriptionItem.identifier
+        )
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
     }
     
 }
 
-import SwiftUI
-#Preview {
-    ContentController(
-        store: ContentDomain.previewStore,
-        contentView: ContentView()
-    )
-}
+//import SwiftUI
+//#Preview {
+//    ContentController(
+//        store: ContentDomain.previewStore,
+//        contentView: ContentView()
+//    )
+//}
