@@ -89,16 +89,16 @@ private extension ContentDataSource {
             [Item.description(breedDetail.description)],
             toSection: .description
         )
-//        snapshot.appendItems(
-//            breedDetail.details.map(Item.detail),
-//            toSection: .details
-//        )
+        snapshot.appendItems(
+            breedDetail.details.map(Item.detail),
+            toSection: .details
+        )
         snapshot.appendItems(
             breedDetail.properties.map(Item.property),
             toSection: .properties
         )
         snapshot.appendItems(
-            breedDetail.links.map(Item.link),
+            breedDetail.links.map(Item.link) ,
             toSection: .links
         )
         return snapshot

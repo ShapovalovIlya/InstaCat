@@ -63,11 +63,11 @@ private extension PropertyItem {
             titleText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
             titleText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Drawing.offset),
             titleText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset),
-            titleText.rightAnchor.constraint(equalTo: ratingText.leftAnchor),
+//            titleText.rightAnchor.constraint(equalTo: ratingText.leftAnchor),
             // ratingText
-            ratingText.leftAnchor.constraint(equalTo: titleText.rightAnchor),
+//            ratingText.leftAnchor.constraint(equalTo: titleText.rightAnchor),
             ratingText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Drawing.offset),
-            ratingText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: Drawing.offset),
+            ratingText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -Drawing.offset),
             ratingText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset)
         ])
     }

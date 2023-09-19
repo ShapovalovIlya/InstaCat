@@ -73,13 +73,13 @@ public struct BreedDetail: Hashable, Equatable {
         if let cfa = breed.cfaURL {
             links.append(Link(title: "CFA", link: cfa))
         }
-        if let vetstreet = breed.vetstreetURL {
+        if let vetstreet = breed.vetstreetUrl {
             links.append(Link(title: "Vetstreet", link: vetstreet))
         }
-        if let vcahospitals = breed.vetstreetURL {
+        if let vcahospitals = breed.vetstreetUrl {
             links.append(Link(title: "VCA hospitals", link: vcahospitals))
         }
-        if let wikipedia = breed.wikipediaURL {
+        if let wikipedia = breed.wikipediaUrl {
             links.append(Link(title: "Wikipedia", link: wikipedia))
         }
         self.links = links

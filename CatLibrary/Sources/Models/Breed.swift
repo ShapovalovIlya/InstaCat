@@ -12,8 +12,8 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
     public let id: String
     public let name: String
     public let cfaURL: String?
-    public let vetstreetURL: String?
-    public let vcahospitalsURL: String?
+    public let vetstreetUrl: String?
+    public let vcahospitalsUrl: String?
     public let temperament: String
     public let origin: String
     public let countryCodes: String
@@ -42,7 +42,7 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
     public let rex: Int
     public let suppressedTail: Int
     public let shortLegs: Int
-    public let wikipediaURL: String?
+    public let wikipediaUrl: String?
     public let hypoallergenic: Int
     public let referenceImageID: String?
     
@@ -89,8 +89,8 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         self.id = id
         self.name = name
         self.cfaURL = cfaURL
-        self.vetstreetURL = vetstreetURL
-        self.vcahospitalsURL = vcahospitalsURL
+        self.vetstreetUrl = vetstreetURL
+        self.vcahospitalsUrl = vcahospitalsURL
         self.temperament = temperament
         self.origin = origin
         self.countryCodes = countryCodes
@@ -119,7 +119,7 @@ public struct Breed: Decodable, Identifiable, Equatable, Hashable {
         self.rex = rex
         self.suppressedTail = suppressedTail
         self.shortLegs = shortLegs
-        self.wikipediaURL = wikipediaURL
+        self.wikipediaUrl = wikipediaURL
         self.hypoallergenic = hypoallergenic
         self.referenceImageID = referenceImageID
     }

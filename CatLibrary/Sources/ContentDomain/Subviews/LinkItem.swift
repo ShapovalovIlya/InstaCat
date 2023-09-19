@@ -55,8 +55,8 @@ private extension LinkItem {
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             linkText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
-            linkText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: -Drawing.offset),
-            linkText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -Drawing.offset),
+            linkText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Drawing.offset),
+            linkText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: Drawing.offset),
             linkText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset)
         ])
     }

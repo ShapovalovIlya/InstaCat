@@ -75,6 +75,7 @@ private extension DescriptionItem {
             descriptionText.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: Drawing.offset),
             // temperamentText
             temperamentText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
+            temperamentText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: Drawing.offset),
             temperamentText.topAnchor.constraint(equalTo: descriptionText.bottomAnchor, constant: Drawing.offset),
         ])
     }

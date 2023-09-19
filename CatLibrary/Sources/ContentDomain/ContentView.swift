@@ -75,13 +75,13 @@ private extension ContentView {
             count: 1
         )
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 20, leading: 0, bottom: 20, trailing: 0)
+        section.contentInsets = .init(top: 20, leading: 0, bottom: 10, trailing: 0)
         return section
     }
     
     func makeDescriptionSection() -> NSCollectionLayoutSection {
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: .fractional(width: 1, height: 0.4),
+            layoutSize: .fractional(width: 1, height: 0.3),
             subitem: .fractional(width: 1, height: 1),
             count: 1
         )
@@ -91,7 +91,7 @@ private extension ContentView {
     }
     
     func makeDetailsSection() -> NSCollectionLayoutSection {
-        let group = NSCollectionLayoutGroup.horizontal(
+        let group = NSCollectionLayoutGroup.vertical(
             layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 44),
             subitem: .fractional(width: 1, height: 1),
             count: 1
@@ -105,24 +105,28 @@ private extension ContentView {
             subitem: .fractional(width: 1, height: 1),
             count: 1
         )
-        return .init(group: group)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
+        return section
     }
     
     func makeLinkSection() -> NSCollectionLayoutSection {
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 80),
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 44),
             subitem: .fractional(width: 0.25, height: 1),
             count: 1
         )
-        return .init(group: group)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
+        return section
     }
     
     func setConstraints() {
         NSLayoutConstraint.activate([
-            scroll.topAnchor.constraint(equalTo: topAnchor),
-            scroll.leftAnchor.constraint(equalTo: leftAnchor),
-            scroll.bottomAnchor.constraint(equalTo: bottomAnchor),
-            scroll.rightAnchor.constraint(equalTo: rightAnchor)
+            scroll.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scroll.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
+            scroll.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            scroll.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor)
         ])
     }
 }
