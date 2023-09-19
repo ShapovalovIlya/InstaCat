@@ -38,8 +38,16 @@ final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item>
             
             propertyItem?.configure(with: property)
             return propertyItem
+            
+        case let .link(link):
+            let linkItem = collectionView.makeItem(
+                withIdentifier: LinkItem.identifier,
+                for: indexPath
+            ) as? LinkItem
+            
+            linkItem?.configure(with: link)
+            return linkItem
         }
-        
     }
     
     //MARK: - init(_:)

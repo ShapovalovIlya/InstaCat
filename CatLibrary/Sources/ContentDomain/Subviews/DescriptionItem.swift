@@ -49,9 +49,8 @@ final class DescriptionItem: NSCollectionViewItem {
     }
     
     override func viewWillLayout() {
-        super.viewWillLayout()
-        
         setConstraints()
+        super.viewWillLayout()
     }
     
     override func viewWillAppear() {

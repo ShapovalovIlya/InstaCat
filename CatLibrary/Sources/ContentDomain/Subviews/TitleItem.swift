@@ -26,8 +26,8 @@ final class TitleItem: NSCollectionViewItem {
     }
     
     override func viewWillLayout() {
-        super.viewWillLayout()
         setContraints()
+        super.viewWillLayout()
     }
     
 //    override func viewWillAppear() {

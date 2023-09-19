@@ -12,4 +12,5 @@ enum Item: Hashable {
     case title(BreedImage)
     case description(Description)
     case property(Property)
+    case link(Link)
 }

@@ -43,9 +43,8 @@ final class PropertyItem: NSCollectionViewItem {
     }
     
     override func viewWillLayout() {
-        super.viewWillLayout()
-        
         setConstraints()
+        super.viewWillLayout()
     }
     
     override func viewWillAppear() {
