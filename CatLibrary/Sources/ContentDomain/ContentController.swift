@@ -19,10 +19,7 @@ final class ContentController: NSViewController {
     private var cancellable: Set<AnyCancellable> = .init()
     private var logger: Logger?
     
-    private lazy var dataSource: NSCollectionViewDiffableDataSource<Section, Item> = .init(
-        collectionView: contentView.collection,
-        itemProvider: makeItemProvider()
-    )
+    private lazy var dataSource: ContentDataSource = .init(collectionView: contentView.collection)
     //MARK: - init(_:)
     init(
         store: StoreOf<ContentDomain>,
@@ -76,40 +73,9 @@ extension ContentController: NSCollectionViewDelegate {
 }
 
 private extension ContentController {
-    //MARK: - Item
-    enum Item: Hashable {
-        case title(BreedImage)
-        case description(Description)
-    }
-    
     //MARK: - Private methods
     func setBindings() {
         
-    }
-    
-    func makeItemProvider() -> NSCollectionViewDiffableDataSource<Section, Item>.ItemProvider {
-        { collectionView, indexPath, item in
-            switch item {
-            case let .title(breedImage):
-                let item = collectionView.makeItem(
-                    withIdentifier: TitleItem.identifier,
-                    for: indexPath
-                ) as? TitleItem
-                
-                item?.configure(with: breedImage)
-                return item
-                
-            case let .description(description):
-                let item = collectionView.makeItem(
-                    withIdentifier: DescriptionItem.identifier,
-                    for: indexPath
-                ) as? DescriptionItem
-                
-                item?.configure(with: description)
-                return item
-            }
-            
-        }
     }
     
     func setup(collectionView: NSCollectionView) {
@@ -120,6 +86,10 @@ private extension ContentController {
         collectionView.register(
             DescriptionItem.self,
             forItemWithIdentifier: DescriptionItem.identifier
+        )
+        collectionView.register(
+            PropertyItem.self,
+            forItemWithIdentifier: PropertyItem.identifier
         )
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
