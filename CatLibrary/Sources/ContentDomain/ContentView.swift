@@ -21,7 +21,7 @@ final class ContentView: NSView, ContentViewProtocol {
     
     //MARK: - init(_:)
     init() {
-        super.init(frame: NSMakeRect(0, 0, 400, 400))
+        super.init(frame: NSMakeRect(0, 0, 600, 600))
         
         collection.collectionViewLayout = makeCollectionLayout()
         scroll.documentView = collection
@@ -74,16 +74,20 @@ private extension ContentView {
             subitem: .fractional(width: 1, height: 1),
             count: 1
         )
-        return .init(group: group)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 20, leading: 0, bottom: 20, trailing: 0)
+        return section
     }
     
     func makeDescriptionSection() -> NSCollectionLayoutSection {
         let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 100),
+            layoutSize: .fractional(width: 1, height: 0.4),
             subitem: .fractional(width: 1, height: 1),
             count: 1
         )
-        return .init(group: group)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10)
+        return section
     }
     
     func makeDetailsSection() -> NSCollectionLayoutSection {

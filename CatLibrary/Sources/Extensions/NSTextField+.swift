@@ -11,15 +11,14 @@ public extension NSTextField {
     static func custom(
         font: NSFont,
         alignment: NSTextAlignment = .natural,
-        numberOfLines: Int = 0,
-        isBezeled: Bool = false
+        numberOfLines: Int = 0
     ) -> NSTextField {
         let textField = NSTextField()
         textField.isSelectable = true
         textField.isEditable = false
-        textField.isBezeled = isBezeled
+        textField.isBezeled = false
+        textField.drawsBackground = false
         textField.lineBreakStrategy = .hangulWordPriority
-        textField.bezelStyle = .squareBezel
         textField.maximumNumberOfLines = numberOfLines
         textField.font = font
         textField.alignment = alignment

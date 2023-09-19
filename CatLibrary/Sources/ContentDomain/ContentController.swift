@@ -12,7 +12,7 @@ import OSLog
 import Extensions
 import Models
 
-final class ContentController: NSViewController {
+public final class ContentController: NSViewController {
     //MARK: - Private properties
     private let store: StoreOf<ContentDomain>
     private let contentView: ContentViewProtocol
@@ -46,19 +46,24 @@ final class ContentController: NSViewController {
     }
     
     //MARK: - Life Cycle
-    override func loadView() {
+    public override func loadView() {
         view = contentView
         setup(collectionView: contentView.collection)
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        store.$state
+            .compactMap(\.breedDetail)
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: dataSource.reload(with:))
+            .store(in: &cancellable)
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
-    override func viewDidDisappear() {
+    public override func viewDidDisappear() {
         super.viewDidDisappear()
         store.dispose()
         logger?.log(level: .debug, domain: self, event: #function)
@@ -67,17 +72,13 @@ final class ContentController: NSViewController {
 
 //MARK: - NSCollectionViewDelegate
 extension ContentController: NSCollectionViewDelegate {
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+    public func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         collectionView.deselectItems(at: indexPaths)
     }
 }
 
 private extension ContentController {
     //MARK: - Private methods
-    func setBindings() {
-        
-    }
-    
     func setup(collectionView: NSCollectionView) {
         collectionView.register(
             TitleItem.self,
@@ -88,8 +89,16 @@ private extension ContentController {
             forItemWithIdentifier: DescriptionItem.identifier
         )
         collectionView.register(
+            DetailItem.self,
+            forItemWithIdentifier: DetailItem.identifier
+        )
+        collectionView.register(
             PropertyItem.self,
             forItemWithIdentifier: PropertyItem.identifier
+        )
+        collectionView.register(
+            LinkItem.self,
+            forItemWithIdentifier: LinkItem.identifier
         )
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self

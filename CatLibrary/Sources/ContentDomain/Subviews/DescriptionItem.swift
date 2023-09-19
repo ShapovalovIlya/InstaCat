@@ -28,8 +28,7 @@ final class DescriptionItem: NSCollectionViewItem {
         numberOfLines: 1
     )
     private let descriptionText: NSTextField = .custom(
-        font: .labelFont(ofSize: Drawing.descriptionFontSize),
-        isBezeled: true
+        font: .labelFont(ofSize: Drawing.descriptionFontSize)
     )
     private let temperamentText: NSTextField = .custom(
         font: .messageFont(ofSize: Drawing.temperamentFontSize),
@@ -53,11 +52,6 @@ final class DescriptionItem: NSCollectionViewItem {
         super.viewWillLayout()
     }
     
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        configure(with: .sample)
-    }
-    
 
     //MARK: - Public methods
     func configure(with description: Description) {
@@ -74,19 +68,14 @@ private extension DescriptionItem {
         NSLayoutConstraint.activate([
             // titleText
             titleText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
-            titleText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -Drawing.offset),
             titleText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Drawing.offset),
-            titleText.heightAnchor.constraint(equalToConstant: Drawing.titleHeight),
-            // descriptionText
+            // Description
             descriptionText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
+            descriptionText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: Drawing.offset),
             descriptionText.topAnchor.constraint(equalTo: titleText.bottomAnchor, constant: Drawing.offset),
-            descriptionText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -Drawing.offset),
-            descriptionText.heightAnchor.constraint(equalTo: safeArea.heightAnchor, multiplier: 0.3),
             // temperamentText
             temperamentText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
             temperamentText.topAnchor.constraint(equalTo: descriptionText.bottomAnchor, constant: Drawing.offset),
-            temperamentText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: -Drawing.offset),
-            temperamentText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -Drawing.offset)
         ])
     }
 }

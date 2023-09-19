@@ -20,8 +20,7 @@ final class LinkItem: NSCollectionViewItem {
     private let linkText: NSTextField = .custom(
         font: .labelFont(ofSize: Drawing.titleFontSize),
         alignment: .center,
-        numberOfLines: 1,
-        isBezeled: true
+        numberOfLines: 1
     )
     
     //MARK: - Life cycle
@@ -37,11 +36,6 @@ final class LinkItem: NSCollectionViewItem {
     override func viewWillLayout() {
         setConstraints()
         super.viewWillLayout()
-    }
-    
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        configure(with: .sample)
     }
     
     //MARK: - Public methods
@@ -66,9 +60,4 @@ private extension LinkItem {
             linkText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset)
         ])
     }
-}
-
-import SwiftUI
-#Preview {
-    LinkItem()
 }

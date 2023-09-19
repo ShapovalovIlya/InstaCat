@@ -30,11 +30,6 @@ final class TitleItem: NSCollectionViewItem {
         super.viewWillLayout()
     }
     
-//    override func viewWillAppear() {
-//        super.viewWillAppear()
-//        configure(with: .sample)
-//    }
-    
     //MARK: - Public methods
     func configure(with breed: BreedImage) {
         let processor: ImageProcessor = DownsamplingImageProcessor(size: breedImage.bounds.size)
@@ -69,8 +64,3 @@ private extension TitleItem {
         ])
     }
 }
-
-//import SwiftUI
-//#Preview {
-//    TitleItem()
-//}

@@ -9,18 +9,23 @@ import Cocoa
 import Models
 
 final class SideBarDataSource: NSCollectionViewDiffableDataSource<Int, String> {
+    //MARK: - ItemProvider
+    private let itemProvider: ItemProvider = { collectionView, indexPath, title in
+        let item = collectionView.makeItem(
+            withIdentifier: BreedItem.identifier,
+            for: indexPath
+        ) as? BreedItem
+                
+        item?.setText(title)
+        return item
+    }
     
     //MARK: - init(_:)
     init(collectionView: NSCollectionView) {
-        super.init(collectionView: collectionView) { collectionView, indexPath, title in
-            let item = collectionView.makeItem(
-                withIdentifier: BreedItem.identifier,
-                for: indexPath
-            ) as? BreedItem
-                    
-            item?.setText(title)
-            return item
-        }
+        super.init(
+            collectionView: collectionView,
+            itemProvider: itemProvider
+        )
     }
     
     //MARK: - Public methods

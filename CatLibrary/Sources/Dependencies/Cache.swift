@@ -55,6 +55,7 @@ public final class Cache<Key: Hashable, Value> {
     }
     
     func value(forKey key: Key) -> Value? {
+        logger?.log(level: .debug, domain: self, event: #function)
         return entry(forKey: key)?.value
     }
     

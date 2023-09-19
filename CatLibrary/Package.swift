@@ -42,6 +42,7 @@ let package = Package(
                 OuterDependencies.Kingfisher.target,
                 OuterDependencies.SwiftUDF.target,
                 "SideBarDomain",
+                "ContentDomain",
             ]),
         .target(
             name: "SideBarDomain",

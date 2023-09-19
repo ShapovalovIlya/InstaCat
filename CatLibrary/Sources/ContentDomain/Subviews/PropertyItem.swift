@@ -47,12 +47,6 @@ final class PropertyItem: NSCollectionViewItem {
         super.viewWillLayout()
     }
     
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        
-        configure(with: .sample)
-    }
-    
     //MARK: - Public methods
     func configure(with property: Property) {
         titleText.stringValue = property.title.appending(":")
@@ -77,9 +71,4 @@ private extension PropertyItem {
             ratingText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset)
         ])
     }
-}
-
-import SwiftUI
-#Preview {
-    PropertyItem()
 }

@@ -17,4 +17,14 @@ public extension NSCollectionLayoutSize {
             heightDimension: .estimated(estimatedHeight)
         )
     }
+    
+    static func fractional(
+        width: CGFloat,
+        height: CGFloat
+    ) -> NSCollectionLayoutSize {
+        .init(
+            widthDimension: .fractionalWidth(width),
+            heightDimension: .fractionalHeight(height)
+        )
+    }
 }

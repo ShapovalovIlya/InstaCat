@@ -12,7 +12,7 @@ import Models
 import Dependencies
 
 public struct ContentDomain: ReducerDomain {
-    public typealias ImageRequest = (Endpoint) -> AnyPublisher<BreedImage, Error>
+    public typealias ImageRequest = (Endpoint) -> AnyPublisher<[BreedImage], Error>
     
     //MARK: - State
     public struct State: Equatable {
@@ -71,6 +71,7 @@ public struct ContentDomain: ReducerDomain {
         case let ._fetchImageRequest(breedId):
             state.dataLoadingStatus = .loading
             return getImageRequest(.photos(breedIDs: breedId, limit: 1))
+                .compactMap(\.first)
                 .map(toSuccessAction(_:))
                 .catch(toFailureAction(_:))
                 .eraseToAnyPublisher()
@@ -78,6 +79,13 @@ public struct ContentDomain: ReducerDomain {
         case let ._fetchImageResponse(.success(breedImage)):
             state.dataLoadingStatus = .none
             state.breedImage = breedImage
+            guard  let breed = state.breed else {
+                break
+            }
+            state.breedDetail = .init(
+                breedImage: breedImage,
+                breed: breed
+            )
             
         case let ._fetchImageResponse(.failure(error)):
             state.dataLoadingStatus = .error(error)
@@ -90,7 +98,7 @@ public struct ContentDomain: ReducerDomain {
     static let previewStore = Store(
         state: Self.State(),
         reducer: Self(getImageRequest: { _ in
-            Just<BreedImage>(.sample)
+            Just<[BreedImage]>([.sample])
                 .setFailureType(to: Error.self)
                 .delay(for: 3, scheduler: DispatchQueue.main)
                 .eraseToAnyPublisher()

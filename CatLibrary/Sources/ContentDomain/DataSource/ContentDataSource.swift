@@ -30,7 +30,13 @@ final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item>
             return descriptionItem
             
         case let .detail(detail):
-            return nil
+            let detailItem = collectionView.makeItem(
+                withIdentifier: DetailItem.identifier,
+                for: indexPath
+            ) as? DetailItem
+            
+            detailItem?.configure(with: detail)
+            return detailItem
             
         case let .property(property):
             let propertyItem = collectionView.makeItem(
@@ -83,6 +89,10 @@ private extension ContentDataSource {
             [Item.description(breedDetail.description)],
             toSection: .description
         )
+//        snapshot.appendItems(
+//            breedDetail.details.map(Item.detail),
+//            toSection: .details
+//        )
         snapshot.appendItems(
             breedDetail.properties.map(Item.property),
             toSection: .properties

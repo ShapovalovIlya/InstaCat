@@ -21,7 +21,7 @@ final class SideBarView: NSView, SideBarViewProtocol {
     
     //MARK: - init(_:)
     public init() {
-        super.init(frame: NSMakeRect(0, 0, 200, 400))
+        super.init(frame: NSMakeRect(0, 0, 200, 600))
         
         collection.collectionViewLayout = makeLayout()
         scroll.documentView = collection

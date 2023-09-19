@@ -12,6 +12,7 @@ import Extensions
 import SwiftUDF
 import SideBarDomain
 import Combine
+import ContentDomain
 
 public final class RootWindowController: NSWindowController {
     //MARK: - Public properties
@@ -20,11 +21,12 @@ public final class RootWindowController: NSWindowController {
     private let store: StoreOf<RootDomain>
     private var logger: Logger?
     private var cancellable: Set<AnyCancellable> = .init()
-    private let contentController = NSViewController()
+    
     private var splitViewController: NSSplitViewController?
     
     private lazy var sharedState = store.$state.share().eraseToAnyPublisher()
     private lazy var sideBarProvider = SideBarProvider()
+    private lazy var contentProvider = ContentProvider()
     
     //MARK: - init(_:)
     public init(
@@ -54,35 +56,19 @@ public final class RootWindowController: NSWindowController {
     public override func loadWindow() {
         configure(window: window)
         window?.toolbar = makeToolbar()
-               
-        let contentBarView = NSView()
-        contentBarView.wantsLayer = true
-        contentBarView.layer?.backgroundColor = NSColor.green.cgColor
-        contentBarView.setFrameSize(.init(width: 400, height: 400))
-        
-        contentController.view = contentBarView
         
         splitViewController = NSSplitViewController(
             sideBarController: sideBarProvider.viewController,
-            contentController: contentController
+            contentController: contentProvider.viewController
         )
         
         contentViewController = splitViewController
         window?.contentView = splitViewController?.splitView
         
-        sideBarProvider.store.$state
-            .compactMap(\.selectedBreed)
-            .removeDuplicates()
-            .sink(receiveValue: { print($0.name) })
-            .store(in: &cancellable)
-        
- //       bind(sharedState, to: sideBarProvider.store)(&cancellable)
-        
-//        sharedState
-//            .compactMap(\.selectedBreed)
-//            .removeDuplicates()
-//            .sink(receiveValue: { _ in })
-//            .store(in: &cancellable)
+        bind(
+            sideBarProvider.store.$state,
+            to: contentProvider.store
+        )(&cancellable)
         
         logger?.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
@@ -128,18 +114,18 @@ extension RootWindowController: NSToolbarDelegate {
 
 private extension RootWindowController {
     //MARK: - Private methods
-//    func bind(
-//        _ state: AnyPublisher<RootDomain.State, Never>,
-//        to store: StoreOf<SideBarDomain>
-//    ) -> (inout Set<AnyCancellable>) -> Void {
-//        { cancellable in
-//            state
-//                .map(\.breeds)
-//                .removeDuplicates()
-//                .sink { store.send(.setBreeds($0)) }
-//                .store(in: &cancellable)
-//        }
-//    }
+    func bind(
+        _ state: Published<SideBarDomain.State>.Publisher,
+        to store: StoreOf<ContentDomain>
+    ) -> (inout Set<AnyCancellable>) -> Void {
+        { cancellable in
+            state
+                .compactMap(\.selectedBreed)
+                .removeDuplicates()
+                .sink { store.send(.setBreed($0)) }
+                .store(in: &cancellable)
+        }
+    }
     
     func configure(window: NSWindow?) {
         window?.windowController = self
