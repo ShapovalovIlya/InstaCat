@@ -18,15 +18,18 @@ public struct ContentDomain: ReducerDomain {
     public struct State: Equatable {
         public var breedImage: BreedImage?
         public var breed: Breed?
+        public var breedDetail: BreedDetail?
         public var dataLoadingStatus: DataLoadingStatus
         
         public init(
             breedImage: BreedImage? = nil,
             breed: Breed? = nil,
+            breedDetail: BreedDetail? = nil,
             dataLoadingStatus: DataLoadingStatus = .none
         ) {
             self.breedImage = breedImage
             self.breed = breed
+            self.breedDetail = breedDetail
             self.dataLoadingStatus = dataLoadingStatus
         }
     }

@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import Models
 
 final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item> {
     //MARK: - ItemProvider
@@ -29,6 +28,9 @@ final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item>
             
             descriptionItem?.configure(with: description)
             return descriptionItem
+            
+        case let .detail(detail):
+            return nil
             
         case let .property(property):
             let propertyItem = collectionView.makeItem(
@@ -53,14 +55,66 @@ final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item>
     //MARK: - init(_:)
     init(collectionView: NSCollectionView) {
         super.init(collectionView: collectionView, itemProvider: itemProvider)
+        self.supplementaryViewProvider = makeSupplementary()
     }
     
     //MARK: - Public methods
-    func reload(with breed: Breed) {
- //       apply(<#T##snapshot: NSDiffableDataSourceSnapshot<Hashable, Hashable>##NSDiffableDataSourceSnapshot<Hashable, Hashable>#>)
+    func reload(with breedDetail: BreedDetail) {
+        let snapshot = makeSnapshot(with: breedDetail)
+        apply(snapshot)
     }
     
-    func reload(with breedImage: BreedImage) {
-        
+}
+
+private extension ContentDataSource {
+    //MARK: - NSDiffableDataSourceSnapshot
+    func makeSnapshot(with breedDetail: BreedDetail) -> NSDiffableDataSourceSnapshot<Section, Item> {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections(Section.allCases)
+        var titles: [Item] = .init()
+        if let image = breedDetail.titleImage {
+            titles.append(Item.title(image))
+            snapshot.appendItems(
+                titles,
+                toSection: .title
+            )
+        }
+        snapshot.appendItems(
+            [Item.description(breedDetail.description)],
+            toSection: .description
+        )
+        snapshot.appendItems(
+            breedDetail.properties.map(Item.property),
+            toSection: .properties
+        )
+        snapshot.appendItems(
+            breedDetail.links.map(Item.link),
+            toSection: .links
+        )
+        return snapshot
+    }
+    
+    //MARK: - SupplementaryViewProvider
+    func makeSupplementary() -> NSCollectionViewDiffableDataSource<Section, Item>.SupplementaryViewProvider {
+        { collectionView, kind, indexPath in
+            switch Section(rawValue: indexPath.section) {
+            case .title:
+                return nil
+            case .description:
+                return nil
+                
+            case .details:
+                return nil
+                
+            case .properties:
+                return nil
+                
+            case .links:
+                return nil
+                
+            case .none:
+                return nil
+            }
+        }
     }
 }

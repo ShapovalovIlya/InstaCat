@@ -53,6 +53,9 @@ private extension ContentView {
             case .description:
                 return self.makeDescriptionSection()
                 
+            case .details:
+                return self.makeDetailsSection()
+                
             case .properties:
                 return self.makePropertiesSection()
                 
@@ -77,6 +80,15 @@ private extension ContentView {
     func makeDescriptionSection() -> NSCollectionLayoutSection {
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 100),
+            subitem: .fractional(width: 1, height: 1),
+            count: 1
+        )
+        return .init(group: group)
+    }
+    
+    func makeDetailsSection() -> NSCollectionLayoutSection {
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .combined(fractionalWidth: 1, estimatedHeight: 44),
             subitem: .fractional(width: 1, height: 1),
             count: 1
         )

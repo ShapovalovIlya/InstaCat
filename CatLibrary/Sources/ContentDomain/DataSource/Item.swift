@@ -11,6 +11,7 @@ import Models
 enum Item: Hashable {
     case title(BreedImage)
     case description(Description)
+    case detail(String)
     case property(Property)
     case link(Link)
 }

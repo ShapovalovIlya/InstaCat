@@ -8,9 +8,10 @@
 import Foundation
 import Models
 
-struct BreedDetail: Hashable, Equatable {
-    let titleImage: BreedImage
+public struct BreedDetail: Hashable, Equatable {
+    let titleImage: BreedImage?
     let description: Description
+    let details: [String]
     let properties: [Property]
     let links: [Link]
 }

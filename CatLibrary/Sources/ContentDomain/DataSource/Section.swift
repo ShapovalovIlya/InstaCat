@@ -10,6 +10,7 @@ import Foundation
 enum Section: Int, CaseIterable {
     case title = 0
     case description
+    case details
     case properties
     case links
 }
