@@ -10,11 +10,13 @@ import Extensions
 
 protocol ContentViewProtocol: NSView {
     var collection: NSCollectionView { get }
+    var galleriaButton: NSButton { get }
 }
 
 final class ContentView: NSView, ContentViewProtocol {
     //MARK: - Public properties
     let collection: NSCollectionView = .plain(isSelectable: true)
+    let galleriaButton: NSButton = makeButton()
     
     //MARK: - Private properties
     private let scroll: NSScrollView = .plain()
@@ -26,7 +28,10 @@ final class ContentView: NSView, ContentViewProtocol {
         collection.collectionViewLayout = makeCollectionLayout()
         scroll.contentInsets = .init(top: 0, left: 0, bottom: 40, right: 0)
         scroll.documentView = collection
-        addSubview(scroll)
+        addSubviews(
+            scroll,
+            galleriaButton
+        )
         setConstraints()
     }
     
@@ -75,12 +80,23 @@ private extension ContentView {
         }
     }
     
+    static func makeButton() -> NSButton {
+        let button = NSButton()
+        button.title = "Galleria"
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
+    
     func setConstraints() {
         NSLayoutConstraint.activate([
-            scroll.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            // scroll
+            scroll.topAnchor.constraint(equalTo: topAnchor),
             scroll.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
             scroll.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            scroll.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor)
+            scroll.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
+            // button
+            galleriaButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
+            galleriaButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20)
         ])
     }
 }

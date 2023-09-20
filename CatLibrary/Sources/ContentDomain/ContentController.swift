@@ -11,6 +11,7 @@ import Combine
 import OSLog
 import Extensions
 import Models
+import GalleriaDomain
 
 public final class ContentController: NSViewController {
     //MARK: - Private properties
@@ -54,12 +55,17 @@ public final class ContentController: NSViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         store.$state
             .compactMap(\.breedDetail)
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: dataSource.reload(with:))
             .store(in: &cancellable)
+        
+        contentView.galleriaButton.target = self
+        contentView.galleriaButton.action = #selector(galleriaButtonTap)
+        
         logger?.log(level: .debug, domain: self, event: #function)
     }
     
@@ -67,6 +73,14 @@ public final class ContentController: NSViewController {
         super.viewDidDisappear()
         store.dispose()
         logger?.log(level: .debug, domain: self, event: #function)
+    }
+    
+    @objc func galleriaButtonTap() {
+        guard let breedId = store.state.breed?.id else {
+            return
+        }
+        let provider = GalleriaProvider(breedId: breedId)
+        provider.windowController.showWindow(nil)
     }
 }
 
@@ -88,8 +102,8 @@ private extension ContentController {
     //MARK: - Private methods
     func setup(collectionView: NSCollectionView) {
         collectionView.register(
-            TitleItem.self,
-            forItemWithIdentifier: TitleItem.identifier
+            CatImageItem.self,
+            forItemWithIdentifier: CatImageItem.identifier
         )
         collectionView.register(
             DescriptionItem.self,
@@ -117,11 +131,3 @@ private extension ContentController {
     }
     
 }
-
-//import SwiftUI
-//#Preview {
-//    ContentController(
-//        store: ContentDomain.previewStore,
-//        contentView: ContentView()
-//    )
-//}

@@ -64,7 +64,7 @@ public struct GalleriaDomain: ReducerDomain {
             guard index > state.images.count - 5 else {
                 break
             }
-            return run(._fetchImageRequest)
+   //         return run(._fetchImageRequest)
             
         case ._fetchImageRequest:
             state.dataLoadingStatus = .loading

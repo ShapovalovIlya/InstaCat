@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "CatLibrary",
     platforms: [
-        .macOS(.v14)
+        .macOS(.v13)
     ],
     products: [
         InnerDependencies.Extensions.library,
@@ -16,6 +16,7 @@ let package = Package(
         .library(name: "RootDomain", targets: ["RootDomain"]),
         .library(name: "SideBarDomain", targets: ["SideBarDomain"]),
         .library(name: "ContentDomain", targets: ["ContentDomain"]),
+        .library(name: "GalleriaDomain", targets: ["GalleriaDomain"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
@@ -39,7 +40,6 @@ let package = Package(
                 InnerDependencies.Extensions.target,
                 InnerDependencies.Dependencies.target,
                 InnerDependencies.Models.target,
-                OuterDependencies.Kingfisher.target,
                 OuterDependencies.SwiftUDF.target,
                 "SideBarDomain",
                 "ContentDomain",
@@ -59,7 +59,6 @@ let package = Package(
                 InnerDependencies.Models.target,
                 InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
-                OuterDependencies.Kingfisher.target,
                 "GalleriaDomain"
             ]),
         .target(
@@ -69,7 +68,6 @@ let package = Package(
                 InnerDependencies.Models.target,
                 InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
-                OuterDependencies.Kingfisher.target,
             ]),
         .testTarget(
             name: "AppTests",
@@ -112,13 +110,11 @@ fileprivate enum InnerDependencies {
 fileprivate enum OuterDependencies: CaseIterable {
     case SwiftUDF
     case SwiftFP
-    case Kingfisher
     
     var package: Package.Dependency {
         switch self {
         case .SwiftUDF: return .package(url: "https://github.com/ShapovalovIlya/SwiftUDF.git", branch: "main")
         case .SwiftFP: return .package(url: "https://github.com/ShapovalovIlya/SwiftFP.git", branch: "main")
-        case .Kingfisher: return .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.9.1")
         }
     }
     
@@ -126,7 +122,6 @@ fileprivate enum OuterDependencies: CaseIterable {
         switch self {
         case .SwiftUDF: return .product(name: "SwiftUDF", package: "SwiftUDF")
         case .SwiftFP: return .product(name: "SwiftFP", package: "SwiftFP")
-        case .Kingfisher: return .product(name: "Kingfisher", package: "Kingfisher")
         }
     }
 }

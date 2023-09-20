@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import GalleriaDomain
 
 final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item> {
     //MARK: - ItemProvider
@@ -13,9 +14,9 @@ final class ContentDataSource: NSCollectionViewDiffableDataSource<Section, Item>
         switch item {
         case let .title(breedImage):
             let titleItem = collectionView.makeItem(
-                withIdentifier: TitleItem.identifier,
+                withIdentifier: CatImageItem.identifier,
                 for: indexPath
-            ) as? TitleItem
+            ) as? CatImageItem
             
             titleItem?.configure(with: breedImage)
             return titleItem

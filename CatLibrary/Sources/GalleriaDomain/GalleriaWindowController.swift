@@ -7,13 +7,19 @@
 
 import AppKit
 import OSLog
+import Extensions
 
 public final class GalleriaWindowController: NSWindowController {
     //MARK: - Private properties
+    private let viewController: GalleriaViewController
     private let logger: Logger?
     
     //MARK: - init(_:)
-    init(logger: Logger? = nil) {
+    init(
+        viewController: GalleriaViewController,
+        logger: Logger? = nil
+    ) {
+        self.viewController = viewController
         self.logger = logger
         super.init(window: .init())
         
@@ -32,7 +38,9 @@ public final class GalleriaWindowController: NSWindowController {
     
     //MARK: - Life cycle
     public override func loadWindow() {
-        
+        setupWindow()
+        contentViewController = viewController
+        window?.contentView = viewController.view
     }
     
     //MARK: - Public methods
@@ -40,5 +48,20 @@ public final class GalleriaWindowController: NSWindowController {
         logger?.log(level: .debug, domain: self, event: #function)
         window?.makeKeyAndOrderFront(sender)
         window?.center()
+    }
+}
+
+//MARK: - Private methods
+private extension GalleriaWindowController {
+    func setupWindow() {
+        window?.title = "Galleria"
+        window?.addStyleMasks(
+            .closable,
+            .miniaturizable,
+            .resizable,
+            .titled,
+            .fullSizeContentView
+        )
+        window?.titlebarSeparatorStyle = .shadow
     }
 }

@@ -1,5 +1,5 @@
 //
-//  TitleItem.swift
+//  CatImageItem.swift
 //  
 //
 //  Created by Илья Шаповалов on 18.09.2023.
@@ -7,44 +7,36 @@
 
 import Cocoa
 import Models
-import Kingfisher
+import Extensions
 
-final class TitleItem: NSCollectionViewItem {
-    static let identifier = NSUserInterfaceItemIdentifier("TitleItemIdentifier")
+public final class CatImageItem: NSCollectionViewItem {
+    public static let identifier = NSUserInterfaceItemIdentifier("CatImageItemIdentifier")
     
     //MARK: - Private properties
     private let breedImage: NSImageView = makeImageView()
     
     //MARK: - Life cycle
-    override func loadView() {
+    public override func loadView() {
         view = NSView()
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(breedImage)
     }
     
-    override func viewWillLayout() {
+    public override func viewWillLayout() {
         setContraints()
         super.viewWillLayout()
     }
     
     //MARK: - Public methods
-    func configure(with breed: BreedImage) {
-        let processor: ImageProcessor = DownsamplingImageProcessor(size: breedImage.bounds.size)
-                                     |> RoundCornerImageProcessor(cornerRadius: 14)
-        breedImage.kf.indicatorType = .activity
-        breedImage.kf.setImage(
-            with: URL(string: breed.url),
-            options: [
-                .processor(processor),
-                .transition(.fade(0.3))
-            ])
+    public func configure(with breed: BreedImage) {
+        breedImage.load(from: URL(string: breed.url))
     }
 }
 
-private extension TitleItem {
+private extension CatImageItem {
     static func makeImageView() -> NSImageView {
         let imageView = NSImageView()
         imageView.imageAlignment = .alignCenter
