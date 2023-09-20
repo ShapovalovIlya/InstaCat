@@ -21,7 +21,7 @@ final class ContentDomainTests: XCTestCase {
         
         sut = .init { _ in
             Empty().eraseToAnyPublisher()
-        }
+        } openLink: { _ in false }
         state = .init()
         spy = .init()
     }
@@ -51,10 +51,10 @@ final class ContentDomainTests: XCTestCase {
     
     func test_fetchImageRequestEndWithSuccess() {
         sut = .init(getImageRequest: { _ in
-            Just(testBreedImageModel)
+            Just([testBreedImageModel])
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
-        })
+        }, openLink: { _ in false })
         
         spy.schedule(
             sut.reduce(&state, action: ._fetchImageRequest("Baz"))
@@ -69,7 +69,7 @@ final class ContentDomainTests: XCTestCase {
         sut = .init(getImageRequest: { _ in
             Fail(error: testError)
                 .eraseToAnyPublisher()
-        })
+        }, openLink: { _ in false })
         
         spy.schedule(
             sut.reduce(&state, action: ._fetchImageRequest("Baz"))

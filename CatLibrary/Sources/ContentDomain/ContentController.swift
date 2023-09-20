@@ -74,6 +74,13 @@ public final class ContentController: NSViewController {
 extension ContentController: NSCollectionViewDelegate {
     public func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         collectionView.deselectItems(at: indexPaths)
+        guard 
+            let indexPath = indexPaths.first,
+            Section(rawValue: indexPath.section) == .links
+        else {
+            return
+        }
+        store.send(.didSelectLinkAt(indexPath.item))
     }
 }
 

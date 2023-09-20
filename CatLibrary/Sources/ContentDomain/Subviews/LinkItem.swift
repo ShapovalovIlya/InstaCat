@@ -31,6 +31,8 @@ final class LinkItem: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(linkText)
+        linkText.isSelectable = false
+        
     }
     
     override func viewWillLayout() {
@@ -52,12 +54,9 @@ final class LinkItem: NSCollectionViewItem {
 
 private extension LinkItem {
     func setConstraints() {
-        let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            linkText.leftAnchor.constraint(equalTo: safeArea.leftAnchor, constant: Drawing.offset),
-            linkText.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: Drawing.offset),
-            linkText.rightAnchor.constraint(equalTo: safeArea.rightAnchor, constant: Drawing.offset),
-            linkText.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: Drawing.offset)
+            linkText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            linkText.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }

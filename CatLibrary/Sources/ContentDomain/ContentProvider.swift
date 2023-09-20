@@ -9,6 +9,7 @@ import Foundation
 import SwiftUDF
 import OSLog
 import Dependencies
+import AppKit
 
 public struct ContentProvider {
     //MARK: - Public properties
@@ -24,7 +25,10 @@ public struct ContentProvider {
         repository = .init(logger: Logger.system)
         store = .init(
             state: ContentDomain.State(),
-            reducer: ContentDomain(getImageRequest: repository.getRequest)
+            reducer: ContentDomain(
+                getImageRequest: repository.getRequest, 
+                openLink: NSWorkspace.shared.open
+            )
         )
         view = ContentView()
         viewController = ContentController(

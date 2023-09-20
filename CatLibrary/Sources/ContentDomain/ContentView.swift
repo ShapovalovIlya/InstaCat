@@ -14,7 +14,7 @@ protocol ContentViewProtocol: NSView {
 
 final class ContentView: NSView, ContentViewProtocol {
     //MARK: - Public properties
-    let collection: NSCollectionView = .plain(isSelectable: false)
+    let collection: NSCollectionView = .plain(isSelectable: true)
     
     //MARK: - Private properties
     private let scroll: NSScrollView = .plain()
@@ -24,6 +24,7 @@ final class ContentView: NSView, ContentViewProtocol {
         super.init(frame: NSMakeRect(0, 0, 600, 600))
         
         collection.collectionViewLayout = makeCollectionLayout()
+        scroll.contentInsets = .init(top: 0, left: 0, bottom: 40, right: 0)
         scroll.documentView = collection
         addSubview(scroll)
         setConstraints()

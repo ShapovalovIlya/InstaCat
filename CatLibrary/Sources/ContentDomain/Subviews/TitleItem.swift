@@ -33,7 +33,7 @@ final class TitleItem: NSCollectionViewItem {
     //MARK: - Public methods
     func configure(with breed: BreedImage) {
         let processor: ImageProcessor = DownsamplingImageProcessor(size: breedImage.bounds.size)
-                                     |> RoundCornerImageProcessor(cornerRadius: 12)
+                                     |> RoundCornerImageProcessor(cornerRadius: 14)
         breedImage.kf.indicatorType = .activity
         breedImage.kf.setImage(
             with: URL(string: breed.url),

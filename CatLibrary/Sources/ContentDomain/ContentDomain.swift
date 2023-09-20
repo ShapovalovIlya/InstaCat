@@ -37,6 +37,7 @@ public struct ContentDomain: ReducerDomain {
     //MARK: - Action
     public enum Action: Equatable {
         case setBreed(Breed)
+        case didSelectLinkAt(Int)
         case _fetchImageRequest(String)
         case _fetchImageResponse(Result<BreedImage, Error>)
         
@@ -47,12 +48,15 @@ public struct ContentDomain: ReducerDomain {
     
     //MARK: - Dependencies
     private let getImageRequest: ImageRequest
+    private let openLink: (URL) -> Bool
     
     //MARK: - init(_:)
     public init(
-        getImageRequest: @escaping ImageRequest
+        getImageRequest: @escaping ImageRequest,
+        openLink: @escaping (URL) -> Bool
     ) {
         self.getImageRequest = getImageRequest
+        self.openLink = openLink
     }
     
     //MARK: - Reducer
@@ -67,6 +71,16 @@ public struct ContentDomain: ReducerDomain {
                 break
             }
             return run(._fetchImageRequest(id))
+            
+        case let .didSelectLinkAt(index):
+            guard 
+                let links = state.breedDetail?.links,
+                index < links.count,
+                let url = URL(string: links[index].link)
+            else {
+                break
+            }
+            _ = openLink(url)
             
         case let ._fetchImageRequest(breedId):
             state.dataLoadingStatus = .loading
@@ -97,12 +111,15 @@ public struct ContentDomain: ReducerDomain {
     //MARK: - Preview store
     static let previewStore = Store(
         state: Self.State(),
-        reducer: Self(getImageRequest: { _ in
-            Just<[BreedImage]>([.sample])
-                .setFailureType(to: Error.self)
-                .delay(for: 3, scheduler: DispatchQueue.main)
-                .eraseToAnyPublisher()
-        })
+        reducer: Self(
+            getImageRequest: { _ in
+                Just([BreedImage.sample])
+                    .setFailureType(to: Error.self)
+                    .delay(for: 3, scheduler: DispatchQueue.main)
+                    .eraseToAnyPublisher()
+            },
+            openLink: { _ in true }
+        )
     )
 }
 
