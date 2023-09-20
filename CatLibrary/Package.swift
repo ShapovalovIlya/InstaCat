@@ -60,6 +60,16 @@ let package = Package(
                 InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
                 OuterDependencies.Kingfisher.target,
+                "GalleriaDomain"
+            ]),
+        .target(
+            name: "GalleriaDomain",
+            dependencies: [
+                InnerDependencies.Extensions.target,
+                InnerDependencies.Models.target,
+                InnerDependencies.Dependencies.target,
+                OuterDependencies.SwiftUDF.target,
+                OuterDependencies.Kingfisher.target,
             ]),
         .testTarget(
             name: "AppTests",
@@ -70,6 +80,7 @@ let package = Package(
                 "RootDomain",
                 "SideBarDomain",
                 "ContentDomain",
+                "GalleriaDomain",
             ])
     ]
 )
