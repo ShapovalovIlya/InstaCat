@@ -24,6 +24,8 @@ public final class RootWindowController: NSWindowController {
     private lazy var sideBarProvider = SideBarProvider()
     private lazy var contentProvider = ContentProvider()
     
+    private lazy var sharedSideBarState = sideBarProvider.store.$state.share().eraseToAnyPublisher()
+    
     //MARK: - init(_:)
     public init(logger: Logger? = nil) {
         self.logger = logger
@@ -57,9 +59,15 @@ public final class RootWindowController: NSWindowController {
         window?.contentView = splitViewController?.splitView
         
         bind(
-            sideBarProvider.store.$state,
+            sharedSideBarState,
             to: contentProvider.store
         )(&cancellable)
+        
+        sharedSideBarState
+            .map(\.dataLoadingStatus)
+            .removeDuplicates()
+            .sink { _ in }
+            .store(in: &cancellable)
         
         logger?.log(level: .debug, domain: self, event: #function)
         windowDidLoad()
@@ -107,7 +115,7 @@ extension RootWindowController: NSToolbarDelegate {
 private extension RootWindowController {
     //MARK: - Private methods
     func bind(
-        _ state: Published<SideBarDomain.State>.Publisher,
+        _ state: AnyPublisher<SideBarDomain.State, Never>,
         to store: StoreOf<ContentDomain>
     ) -> (inout Set<AnyCancellable>) -> Void {
         { cancellable in
