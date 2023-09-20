@@ -8,12 +8,11 @@
 import AppKit
 
 public extension NSScrollView {
-    static func plain(scrollersAlpha: CGFloat = 0) -> NSScrollView {
+    static func plain() -> NSScrollView {
         let scroll = NSScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         scroll.drawsBackground = false
-        scroll.horizontalScroller?.alphaValue = scrollersAlpha
-        scroll.verticalScroller?.alphaValue = scrollersAlpha
+        scroll.autohidesScrollers = true
         return scroll
     }
 }

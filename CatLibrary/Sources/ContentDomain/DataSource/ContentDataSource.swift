@@ -107,24 +107,26 @@ private extension ContentDataSource {
     //MARK: - SupplementaryViewProvider
     func makeSupplementary() -> NSCollectionViewDiffableDataSource<Section, Item>.SupplementaryViewProvider {
         { collectionView, kind, indexPath in
+            let header = collectionView.makeSupplementaryView(
+                ofKind: NSCollectionView.elementKindSectionHeader,
+                withIdentifier: HeaderView.identifier,
+                for: indexPath
+            ) as? HeaderView
+            
             switch Section(rawValue: indexPath.section) {
-            case .title:
-                return nil
-            case .description:
-                return nil
-                
             case .details:
-                return nil
+                header?.set(title: "Details")
                 
             case .properties:
-                return nil
+                header?.set(title: "Properties")
                 
             case .links:
-                return nil
+                header?.set(title: "Links")
                 
-            case .none:
+            default:
                 return nil
             }
+            return header
         }
     }
 }

@@ -100,6 +100,11 @@ private extension ContentController {
             LinkItem.self,
             forItemWithIdentifier: LinkItem.identifier
         )
+        collectionView.register(
+            HeaderView.self,
+            forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
+            withIdentifier: HeaderView.identifier
+        )
         collectionView.dataSource = self.dataSource
         collectionView.delegate = self
     }

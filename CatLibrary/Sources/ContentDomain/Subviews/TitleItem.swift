@@ -37,7 +37,6 @@ final class TitleItem: NSCollectionViewItem {
         breedImage.kf.indicatorType = .activity
         breedImage.kf.setImage(
             with: URL(string: breed.url),
-            placeholder: nil,
             options: [
                 .processor(processor),
                 .transition(.fade(0.3))

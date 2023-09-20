@@ -26,18 +26,12 @@ final class SideBarView: NSView, SideBarViewProtocol {
         collection.collectionViewLayout = makeLayout()
         scroll.documentView = collection
         addSubview(scroll)
+        setConstraints()
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    //MARK: - draw(_:)
-    public override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-
-        setConstraints()
     }
     
 }

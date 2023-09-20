@@ -15,8 +15,6 @@ import Combine
 import ContentDomain
 
 public final class RootWindowController: NSWindowController {
-    //MARK: - Public properties
-    
     //MARK: - Private properties
     private let store: StoreOf<RootDomain>
     private var logger: Logger?
