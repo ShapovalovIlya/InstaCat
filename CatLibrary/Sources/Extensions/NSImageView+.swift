@@ -8,7 +8,10 @@
 import AppKit
 
 public extension NSImageView {
-    func load(from url: URL?) {
+    func load(
+        from url: URL?,
+        completion: ((NSImage) -> Void)? = nil
+    ) {
         DispatchQueue.global().async { [weak self] in
             guard
                 let url = url,
@@ -18,6 +21,7 @@ public extension NSImageView {
                 return
             }
             DispatchQueue.main.async {
+                completion?(image)
                 self?.image = image
             }
         }

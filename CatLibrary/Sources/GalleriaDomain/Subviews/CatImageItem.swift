@@ -8,6 +8,7 @@
 import Cocoa
 import Models
 import Extensions
+import Dependencies
 
 public final class CatImageItem: NSCollectionViewItem {
     public static let identifier = NSUserInterfaceItemIdentifier("CatImageItemIdentifier")
@@ -30,9 +31,22 @@ public final class CatImageItem: NSCollectionViewItem {
         super.viewWillLayout()
     }
     
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        breedImage.image = nil
+    }
+    
     //MARK: - Public methods
     public func configure(with breed: BreedImage) {
-        breedImage.load(from: URL(string: breed.url))
+        guard let url = URL(string: breed.url) else {
+            return
+        }
+        if let image = ImageCache.shared.image(forUrl: url) {
+            breedImage.image = image
+        } else {
+            breedImage.load(from: url) { ImageCache.shared.setImage($0, forUrl: url) }
+        }
     }
 }
 

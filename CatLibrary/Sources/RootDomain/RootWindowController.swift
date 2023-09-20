@@ -16,22 +16,16 @@ import ContentDomain
 
 public final class RootWindowController: NSWindowController {
     //MARK: - Private properties
-    private let store: StoreOf<RootDomain>
     private var logger: Logger?
     private var cancellable: Set<AnyCancellable> = .init()
     
     private var splitViewController: NSSplitViewController?
     
-    private lazy var sharedState = store.$state.share().eraseToAnyPublisher()
     private lazy var sideBarProvider = SideBarProvider()
     private lazy var contentProvider = ContentProvider()
     
     //MARK: - init(_:)
-    public init(
-        store: StoreOf<RootDomain>,
-        logger: Logger? = nil
-    ) {
-        self.store = store
+    public init(logger: Logger? = nil) {
         self.logger = logger
         super.init(window: .init())
         
@@ -45,7 +39,6 @@ public final class RootWindowController: NSWindowController {
     }
     
     deinit {
-        store.dispose()
         cancellable.removeAll()
         logger?.log(level: .debug, domain: self, event: #function)
     }

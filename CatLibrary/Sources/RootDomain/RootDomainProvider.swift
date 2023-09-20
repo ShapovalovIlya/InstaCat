@@ -11,32 +11,16 @@ import SwiftUDF
 import Combine
 import OSLog
 import Dependencies
-
 import Models
 
-@dynamicMemberLookup
 public struct RootDomainProvider {
-    //MARK: - Public properties
-    public let store: StoreOf<RootDomain>
     
     //MARK: - Private properties
     private let windowController: RootWindowController
     
     //MARK: -  init(_:)
     public init() {
-        self.store = Store(
-            state: RootDomain.State(),
-            reducer: RootDomain()
-        )
-        self.windowController = RootWindowController(
-            store: store,
-            logger: Logger.viewCycle
-        )
-    }
-    
-    //MARK: - Subscript
-    public subscript<V>(dynamicMember keyPath: KeyPath<RootWindowController, V>) -> V {
-        windowController[keyPath: keyPath]
+        self.windowController = .init(logger: Logger.viewCycle)
     }
     
     public func showWindow() {

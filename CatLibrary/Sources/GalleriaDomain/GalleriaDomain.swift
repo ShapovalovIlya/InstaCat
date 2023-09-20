@@ -64,7 +64,7 @@ public struct GalleriaDomain: ReducerDomain {
             guard index > state.images.count - 5 else {
                 break
             }
-   //         return run(._fetchImageRequest)
+            return run(._fetchImageRequest)
             
         case ._fetchImageRequest:
             state.dataLoadingStatus = .loading
@@ -75,7 +75,12 @@ public struct GalleriaDomain: ReducerDomain {
                 .eraseToAnyPublisher()
             
         case let ._fetchImageResponse(.success(images)):
-            state.images.append(contentsOf: images)
+            images.forEach { imageModel in
+                if state.images.contains(imageModel) {
+                    return
+                }
+                state.images.append(imageModel)
+            }
             
         case let ._fetchImageResponse(.failure(error)):
             state.dataLoadingStatus = .error(error)
