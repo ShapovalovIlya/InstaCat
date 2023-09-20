@@ -75,12 +75,8 @@ public struct GalleriaDomain: ReducerDomain {
                 .eraseToAnyPublisher()
             
         case let ._fetchImageResponse(.success(images)):
-            images.forEach { imageModel in
-                if state.images.contains(imageModel) {
-                    return
-                }
-                state.images.append(imageModel)
-            }
+            let unique = images.filter { !state.images.contains($0) }
+            state.images.append(contentsOf: unique)
             
         case let ._fetchImageResponse(.failure(error)):
             state.dataLoadingStatus = .error(error)
