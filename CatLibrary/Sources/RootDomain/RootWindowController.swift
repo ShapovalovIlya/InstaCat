@@ -80,6 +80,7 @@ public final class RootWindowController: NSWindowController {
     
     //MARK: - Public methods
     public override func showWindow(_ sender: Any?) {
+        logger?.log(level: .debug, domain: self, event: #function)
         window?.makeKeyAndOrderFront(sender)
         window?.center()
     }
