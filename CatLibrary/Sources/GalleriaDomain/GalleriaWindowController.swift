@@ -41,6 +41,8 @@ public final class GalleriaWindowController: NSWindowController {
         setupWindow()
         contentViewController = viewController
         window?.contentView = viewController.view
+        
+        logger?.log(level: .debug, domain: self, event: #function)
     }
     
     //MARK: - Public methods

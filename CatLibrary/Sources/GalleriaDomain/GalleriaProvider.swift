@@ -34,6 +34,9 @@ public struct GalleriaProvider {
             store: store,
             logger: Logger.viewCycle
         )
-        windowController = .init(viewController: viewController)
+        windowController = .init(
+            viewController: viewController,
+            logger: Logger.windowCycle
+        )
     }
 }

@@ -38,7 +38,7 @@ final class GalleriaView: NSView, GalleriaViewProtocol {
 private extension GalleriaView {
     //MARK: - Private methods
     func makeLayout() -> NSCollectionViewCompositionalLayout {
-        let section: NSCollectionLayoutSection = .sectionLayout(
+        let section: NSCollectionLayoutSection = .vertical(
             item: .fractional(width: 1, height: 1),
             group: .fractional(width: 1, height: 0.8)
         )

@@ -52,7 +52,7 @@ public final class CatImageItem: NSCollectionViewItem {
         cancellable = ImageCache.shared.image(forUrl: url).throwingPublisher
             .catch { _ in
                 self.imageTaskPublisher(for: url)
-                    .cache(forUrl: url)
+                    .cacheImage(forUrl: url)
             }
             .replaceError(with: placeholderImage ?? .init())
             .receive(on: DispatchQueue.main)

@@ -20,7 +20,7 @@ public struct RootDomainProvider {
     
     //MARK: -  init(_:)
     public init() {
-        self.windowController = .init(logger: Logger.viewCycle)
+        self.windowController = .init(logger: Logger.windowCycle)
     }
     
     public func showWindow() {

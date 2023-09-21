@@ -48,30 +48,30 @@ private extension ContentView {
         .init { sectionIndex, environment in
             switch Section(rawValue: sectionIndex) {
             case .title:
-                return .sectionLayout(
+                return .vertical(
                     item: .fractional(width: 1, height: 1),
-                    group: .combined(fractionalWidth: 1, estimatedHeight: 150),
+                    group: .fractional(width: 1, height: 0.5),
                     insets: .init(top: 20, leading: 0, bottom: 10, trailing: 0)
                 )
                 
             case .description:
-                return .sectionLayout(
+                return .vertical(
                     item: .fractional(width: 1, height: 1),
-                    group: .fractional(width: 1, height: 0.4)
+                    group: .fractional(width: 1, height: 0.3)
                 )
                 
-            case .details, .properties:
-                return .sectionLayout(
+            case .properties:
+                return .vertical(
                     item: .fractional(width: 1, height: 1),
-                    group: .combined(fractionalWidth: 1, estimatedHeight: 44),
-                    supplementary: [.header(height: 44)]
+                    group: .combined(fractionalWidth: 1, estimatedHeight: 50)
                 )
                 
-            case .links:
-                return .sectionLayout(
+            case .links, .details:
+                return .vertical(
                     item: .fractional(width: 1, height: 1),
-                    group: .combined(fractionalWidth: 1, estimatedHeight: 44),
-                    supplementary: [.header(height: 44)]
+                    group: .combined(fractionalWidth: 0.3, estimatedHeight: 60),
+                    supplementary: [.header(height: 44)],
+                    scrollBehavior: .continuous
                 )
                 
             case .none:
