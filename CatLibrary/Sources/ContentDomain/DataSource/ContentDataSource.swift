@@ -78,11 +78,10 @@ private extension ContentDataSource {
     func makeSnapshot(with breedDetail: BreedDetail) -> NSDiffableDataSourceSnapshot<Section, Item> {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(Section.allCases)
-        var titles: [Item] = .init()
-        if let image = breedDetail.titleImage {
-            titles.append(Item.title(image))
+        
+        if let title = breedDetail.titleImage.map(Item.title) {
             snapshot.appendItems(
-                titles,
+                [title],
                 toSection: .title
             )
         }
