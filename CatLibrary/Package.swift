@@ -17,7 +17,6 @@ let package = Package(
         .library(name: "SideBarDomain", targets: ["SideBarDomain"]),
         .library(name: "ContentDomain", targets: ["ContentDomain"]),
         .library(name: "GalleriaDomain", targets: ["GalleriaDomain"]),
-        .library(name: "ImageDownloader", targets: ["ImageDownloader"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
@@ -69,8 +68,8 @@ let package = Package(
                 InnerDependencies.Models.target,
                 InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
+                OuterDependencies.ImageDownloader.target,
             ]),
-        .target(name: "ImageDownloader"),
         .testTarget(
             name: "AppTests",
             dependencies: [
@@ -112,11 +111,13 @@ fileprivate enum InnerDependencies {
 fileprivate enum OuterDependencies: CaseIterable {
     case SwiftUDF
     case SwiftFP
+    case ImageDownloader
     
     var package: Package.Dependency {
         switch self {
         case .SwiftUDF: return .package(url: "https://github.com/ShapovalovIlya/SwiftUDF.git", branch: "main")
         case .SwiftFP: return .package(url: "https://github.com/ShapovalovIlya/SwiftFP.git", branch: "main")
+        case .ImageDownloader: return .package(url: "https://github.com/ShapovalovIlya/ImageDownloader.git", branch: "main")
         }
     }
     
@@ -124,6 +125,7 @@ fileprivate enum OuterDependencies: CaseIterable {
         switch self {
         case .SwiftUDF: return .product(name: "SwiftUDF", package: "SwiftUDF")
         case .SwiftFP: return .product(name: "SwiftFP", package: "SwiftFP")
+        case .ImageDownloader: return .product(name: "ImageDownloader", package: "ImageDownloader")
         }
     }
 }

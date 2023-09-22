@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "imagedownloader",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShapovalovIlya/ImageDownloader.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "026057c0b48c8bc3a2fb300a0563d39d49a9064b"
+      }
+    },
+    {
       "identity" : "swiftfp",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ShapovalovIlya/SwiftFP.git",

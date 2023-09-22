@@ -10,6 +10,7 @@ import Models
 import Extensions
 import Dependencies
 import Combine
+import ImageDownloader
 
 public final class CatImageItem: NSCollectionViewItem {
     public static let identifier = NSUserInterfaceItemIdentifier("CatImageItemIdentifier")
@@ -49,16 +50,15 @@ public final class CatImageItem: NSCollectionViewItem {
         guard let url = URL(string: breed.url) else {
             return
         }
-        cancellable = ImageCache.shared.image(forUrl: url).throwingPublisher
-            .catch { _ in
-                self.imageTaskPublisher(for: url)
-                    .cacheImage(forUrl: url)
+
+        cancellable = breedImageView.image(for: url) { completion in
+            switch completion {
+            case .finished:
+                print("Finish image loading")
+            case let .failure(error):
+                print(error)
             }
-            .replaceError(with: placeholderImage ?? .init())
-            .receive(on: DispatchQueue.main)
-            .sink { image in
-                self.breedImageView.image = image
-            }
+        }
     }
 }
 
