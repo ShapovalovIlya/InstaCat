@@ -17,10 +17,6 @@ public final class CatImageItem: NSCollectionViewItem {
     
     //MARK: - Private properties
     private let breedImageView: NSImageView = makeImageView()
-    private let placeholderImage: NSImage? = .init(
-        systemSymbolName: "paw",
-        accessibilityDescription: "placeholder image"
-    )
     private var cancellable: AnyCancellable?
     
     //MARK: - Life cycle
@@ -50,8 +46,14 @@ public final class CatImageItem: NSCollectionViewItem {
         guard let url = URL(string: breed.url) else {
             return
         }
-
-        cancellable = breedImageView.image(for: url) { completion in
+        
+        cancellable = breedImageView.imageCancellable(
+            for: url,
+            options: [
+                .cacheFor(url),
+             //   .resizeTo(breedImageView.bounds.size),
+             //   .cornerRadius(20)
+            ]) { completion in
             switch completion {
             case .finished:
                 print("Finish image loading")
@@ -63,13 +65,6 @@ public final class CatImageItem: NSCollectionViewItem {
 }
 
 private extension CatImageItem {
-    func imageTaskPublisher(for url: URL) -> AnyPublisher<NSImage, Error> {
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
-            .compactMap(NSImage.init(data:))
-            .mapError { $0 }
-            .eraseToAnyPublisher()
-    }
     
     static func makeImageView() -> NSImageView {
         let imageView = NSImageView()

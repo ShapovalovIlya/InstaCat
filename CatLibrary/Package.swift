@@ -17,6 +17,7 @@ let package = Package(
         .library(name: "SideBarDomain", targets: ["SideBarDomain"]),
         .library(name: "ContentDomain", targets: ["ContentDomain"]),
         .library(name: "GalleriaDomain", targets: ["GalleriaDomain"]),
+ //       .library(name: "ImageDownloader", targets: ["ImageDownloader"]),
     ],
     dependencies: OuterDependencies.allCases.map(\.package),
     targets: [
@@ -69,7 +70,9 @@ let package = Package(
                 InnerDependencies.Dependencies.target,
                 OuterDependencies.SwiftUDF.target,
                 OuterDependencies.ImageDownloader.target,
+       //         "ImageDownloader"
             ]),
+   //     .target(name: "ImageDownloader"),
         .testTarget(
             name: "AppTests",
             dependencies: [
